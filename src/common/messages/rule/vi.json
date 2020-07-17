@@ -1,0 +1,9 @@
+{
+  "NAME_IS_REQUIRED":"Tên quyền không được để trống",
+  "TYPE_IS_REQUIRED":"Loại quyền không được để trống",
+  "NAME_MIN_IS_6":"Tên quyền tối thiểu 6 ký tự",
+  "NAME_MAX_IS_40":"Tên quyền tối đa 40 ký tự",
+  "RULE_IS_NOT_EXIST":"Quyền không tồn tại",
+  "RULE_IS_EXIST":"Quyền đã tồn tại",
+  "RULE_IS_DUPLICATE":"Thông tin quyền bị trùng"
+}

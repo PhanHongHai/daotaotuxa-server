@@ -1,0 +1,6 @@
+{
+  "INVALID_KEY_COMMUNICATION" : "The key communication is invalid, please contact administrator",
+  "INTERNAL_SERVER_ERROR" : "Internal server error",
+  "LIMIT_IS_REQUIRED": "Limit must be a number",
+  "PAGE_IS_REQUIRED": "Page must be a number"
+}

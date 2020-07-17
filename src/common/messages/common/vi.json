@@ -1,0 +1,10 @@
+{
+  "INTERNAL_SERVER_ERROR" : "Lỗi hệ thống",
+  "LIMIT_IS_REQUIRED": "Giới hạn trang không được để trống",
+  "PAGE_IS_REQUIRED": "Số trang không được để trống",
+  "LIMIT_IS_NUMBER": "Giới hạn trang nên là dạng số",
+  "PAGE_IS_NUMBER": "Số trang nên là dạng số",
+  "FROM_IS_REQUIRED": "Thời gian bắt đầu không được để trống",
+  "TO_IS_REQUIRED": "Thời gian kết thúc không được để trống",
+  "GROUP_TYPE_IS_REQUIRED": "Dạng thời gian thống kê không được để trống"
+}

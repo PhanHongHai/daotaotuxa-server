@@ -1,0 +1,9 @@
+{
+    "ACCOUNT_IS_REQUIRED": "Tài khoản không được bỏ trống",
+    "SUBJECT_IS_REQUIRED": "Môn học không được bỏ trống",
+    "ACCOUNT_NOT_EXSIT": "Tài khoản này không tồn tại",
+    "SUBJECT_NOT__EXSIT" : "Môn học này không tồn tại",
+    "SCORE_IS_EXSIT": "Điểm môn học này đã tồn tại",
+    "SCORE_IS_NOT_EXSIT": "Điểm của học sinh này chưa tồn tại"
+    
+}

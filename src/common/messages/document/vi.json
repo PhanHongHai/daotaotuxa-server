@@ -1,0 +1,10 @@
+{
+    "SUBJECTID_IS_REQUIRED": "Môn học không được để trống",
+    "NAME_IS_REQUIRED": "Tên tài liệu không được để trống",
+    "NOT_FILE_SELECTED": "Bạn chưa chọn file",
+    "NOT_EXSIT_SUBJECT": "Không tìm thấy môn học này",
+    "NOT_EXSIT_DOCUMENT": "Không tồn tại tài liệu bạn muốn sửa",
+    "SUBJECTID_IS_EXIST_IN_DOCUMENT":"môn học này đã có tài liệu",
+    "TITLE_IS_EXIST":"Tiêu đề đã tồn tại",
+    "DOCUMENT_IS_NOT_EXIST":"Nội dung không tồn tại"
+}

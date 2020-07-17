@@ -1,0 +1,6 @@
+{
+  "ACCOUNT_ID_IS_REQUIRED":"Mã tài khoản không được để trống",
+  "NAME_IS_REQUIRED":"Tên quyền không được để trống",
+  "VALUE_INVAILD":"Giá trị không hợp lệ",
+  "RULE_NOT_EXIST":"Quyền này không tồn tại trong hệ thống"
+}

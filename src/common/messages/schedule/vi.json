@@ -1,0 +1,14 @@
+{
+	"SCHEDULE_IS_DUPLICATED": "Thời gian lịch thi đã bị trùng",
+	"SCHEDULE_IS_NOT_EXIST": "Lịch thi này không tồn tại",
+	"SCHEDULE_IS_EXIST": "Lịch thi này đã tồn tại",
+	"TITLE_IS_EXIST": "Tiêu đề đã tồn tại",
+	"TITLE_IS_REQUIRED": "Tiêu đề không được để trống",
+	"CLASSES_IS_REQUIRED": "Danh sách lớp không được để trống",
+	"DAY_AT_IS_REQUIRED": "Ngày thi không được để trống",
+	"TIME_AT_IS_REQUIRED": "Thời gian bắt đầu thi không được để trống",
+	"TIME_RANGE_IS_REQUIRED": "Thời gian làm bài thi không được để trống",
+	"SUBJECT_IS_REQUIRED": "Môn học không được để trống",
+	"EXAM_IS_REQUIRED": "Đề thi không được để trống",
+	"SECTOR_IS_REQUIRED": "Ngành đào tạo không được để trống"
+}

@@ -1,0 +1,19 @@
+{
+    "NAME_IS_REQUIRED":"Tên lớp không được để trống",
+    "STARTAT_IS_REQUIRED":"Ngày bắt đầu không để trống",
+    "ENDAT_IS_REQUIRED":"Ngày kết thúc không được để trống",
+    "TRAININGSECTOR_IS_REQUIRED": "Tên chuyên ngành không được bỏ trống",
+    "TRAININGSECTOR_IS_NOT_EXIST": "Không tồn tại chuyên ngành này",
+    "STARTAT_MIN":"Ngầy bắt đầu là ngày hôm nay khoặc sau này hôm nay",
+    "NOT_FOUND_CLASS":"Không tìm thấy lớp",
+    "NOT_FOUNT_CLASS_UPDATE":"Không tìm thấy lớp cần cập nhật",
+    "NOT_FOUNT_CLASS_DELETE": "Không tìm thấy lớp cần xóa",
+    "CLASS_IS_EXIST":"Lớp này đã tồn tại",
+    "CLASSNAME_IS_EXIST":"Tên lớp này đã tồn tại",
+    "ACCOUNT_NOT_EXIST":"Tài khoản giáo viên không tồn tại",
+    "ACCOUNT_TEACHER_NOT_ACTIVED":"Tài khoản giáo viên chưa được kích hoạt",
+    "ACCOUNT_NOT_EXSIT_IN_CLASS": "Tài khoản này không tồn tại trong lớp học nào cả",
+    "THIS_CLASS_NOT_EXSIT_TEACHER": "Lớp này chưa tồn tại giản viên",
+    "YEAR_IS_REQUIRED": "Năm thống kê không được để trống"
+
+}

@@ -1,0 +1,9 @@
+{
+	"EXAM_IS_NOT_EXIST": "Đề thi này không tồn tại",
+	"EXAM_IS_EXIST": "Đề thi này đã tồn tại",
+	"TITLE_IS_EXIST": "Tiêu đề đã tồn tại",
+	"TITLE_IS_REQUIRED": "Tiêu đề không được để trống",
+	"NUMBER_IS_REQUIRED": "Số lượng câu hỏi không được để trống",
+	"QUESTIONS_IS_REQUIRED": "Danh sách câu hỏi không được để trống",
+	"LEVEL_QUESTION_IS_REQUIRED": "Tập các câu hỏi không được để trống"
+}

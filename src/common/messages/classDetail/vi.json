@@ -1,0 +1,11 @@
+{
+    "CLASS_ID_IS_REQUIRED":"id class không được bỏ trống",
+    "ACCOUNT_ID_IS_REQUIRED":"id account không được bỏ trống",
+    "CLASSDETAIL_IS_EXIST": "Đã tồn tại tài khoản trong lớp này",
+    "NOT_FOUNT_CLASS_DETAILE_DELETE":"không tìm thấy chi tiết lớp cần xóa",
+    "NOT_FOUNT_CLASS_DETAIL_UPDATE":"Không tìm thấy chi tiết lớp cần sửa",
+    "NOT_FOUND_CLASS_DETAIL":"không tìm thấy chi tiết lớp",
+    "ACCOUNT_IS_NOT_EXIST":"Không tồn tại tài khoản này",
+    "CLASS_ID_IS_NOT_EXIST":"Không tồn tại classID này",
+    "ROLE_ACCOUNT_IS_NOT_VALID": "Bạn chỉ được thêm tài khoản giáo viên hoặc học viên"
+}

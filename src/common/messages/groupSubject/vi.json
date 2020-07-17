@@ -1,0 +1,9 @@
+{
+	"GROUPSUBJECT_IS_EXSIT": "Môn học đã tồn tại",
+	"NOT_EXSIT_GROUPSUBJECT": "Không tồn tại môn học này",
+	"NOT_EXSIT_SECTOR": "không tồn tại ngành đào tạo này",
+	"NOT_EXSIT_SUBJECT": "Không tồn tại môn học này",
+	"SUBJECT_ID_IS_REQUIRED": "Mã môn học không được để trống",
+	"SECTOR_ID_IS_REQUIRED": "Mã ngành không được để trống",
+	"NOT_EXSIT_CLASS": "Lớp học không tồn tại"
+}

@@ -1,0 +1,13 @@
+{
+    "ACCOUNTID_NOT_EXIST":"Không tồn tại tài khoản này",
+    "ACCOUNTID_IS_EXIST_IN_PROFILE":"Hồ sơ của tài khoản đã tồn tại",
+    "NOT_EXIST_PROFILE": "Không tồn tại hồ sơ",
+    "ACCOUNTID_IS_REQUIRED": "tài khoản không được bỏ trống",
+    "NAME_IS_REQUIRED":"Tên hồ sơ không được bỏ trống",
+    "PATH_IS_REQUIRED":"Đường dẫn tệp không được bỏ trống",
+    "URL_IS_REQUIRED":"Đường dẫn hồ sơ không được bỏ trống",
+    "NO_FILE_SELECTED": "bạn chưa chọn file",
+    "NOT_FOUND_PROFILE":"Không tìm thấy hồ sơ",
+    "FILE_INVALID":"File không hợp lệ",
+    "TYPEPROFILE_IS_NOT_EXIST":"Loại hồ sơ không tồn tại"
+}

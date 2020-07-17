@@ -1,0 +1,13 @@
+{
+    "NAME_IS_REQUIRED":"Tên chuyên ngành không được để trống",
+    "TYPE_IS_REQUIRED":"Hệ đào tạo chuyên ngành không được để trống",
+    "NOT_FOUNT_TRAINING_SECTOR_UPDATE":"Khồng tìm thấy chuyên ngành để cập nhật",
+    "NAME_MIN_IS_10":"Tên chuyên ngành ít nhất là 10 ký tự",
+    "NAME_MAX_IS_10":"Tên chuyên ngành nhiều nhất là 150 ký tự",
+    "NOT_FOUND_TRAINING_SECTOR":"Không tìm thấy chuyên ngành",
+    "TYPE_AND_NAME_IS_EXIST":"Tên chuyên ngành và hệ đào tạo này đã tồn tại",
+    "NOT_FOUNT_TRAINING_SECTOR_DELETE":"Không tìm thấy ngành đào tạo cần xóa",
+    "TYPE_IS_EXIST_IN_NAME":"Tên chuyên ngành đã tồn tại hệ đào tạo này",
+    "NAME_IS_EXIST_IN_TYPE": "Hệ đào tạo đã tồn tại tên chuyên ngành này"
+
+}

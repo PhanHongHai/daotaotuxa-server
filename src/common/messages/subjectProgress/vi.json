@@ -1,0 +1,10 @@
+{
+	"ACCOUNT_ID_IS_REQUIRED": "Mã học viên không được để trống",
+	"SUBJECT_IS_REQUIRED": "Mã môn học  không được để trống",
+	"DOCUMENTS_IS_REQUIRED": "Danh sách bài học không được để trống",
+	"PROGRESS_IS_REQUIRED": "Tiến độ môn học không được để trống",
+	"PROGRESS_MIN_IS_0": "Tiến độ môn học tối thiểu 0%",
+	"PROGRESS_MAX_IS_100": "Tiến độ môn học tối đa 100%",
+	"SUBJECT_IS_EXSIT": "Mã môn học đã tồn tại",
+	"NOT_EXSIT_SUBJECT_PROGRESS": "không tồn tại tiến độ môn học"
+}

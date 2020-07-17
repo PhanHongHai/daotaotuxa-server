@@ -1,0 +1,12 @@
+{
+
+  "TAG_IS_REQUIRED":"Mã môn học không được để trống",
+  "TAG_IS_EXSIT":"Mã môn học đã tồn tại",
+  "NAME_IS_REQUIRED":"Tên môn học không được để trống",
+  "NAME_MIN_IS_5":"Tên môn học tối thiểu 5 ký tự",
+  "NAME_MAX_IS_100":"Tên môn học tối đa 100 ký tự",
+  "INTRODUCE_MAX_IS_200":"Nội dung mô tả tối đa 200 ký tự",
+  "NAME_IS_EXSIT": "Tên môn học đã tồn tại",
+  "NOT_EXSIT_SUBJECT": "không tồn tại môn học"
+
+}

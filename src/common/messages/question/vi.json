@@ -1,0 +1,9 @@
+{
+	"QUESTION_IS_NOT_EXIST": "Câu hỏi này không tồn tại",
+	"QUESTION_IS_EXIST": "Câu hỏi này đã tồn tại",
+	"CONTENT_IS_EXIST": "Nội dung câu hỏi đã tồn tại",
+	"CONTENT_IS_REQUIRED": "Nội dung câu hỏi không được bỏ trống",
+	"ANSWER_IS_REQUIRED": "Nội dung đáp án không được bỏ trống",
+	"LEVEL_IS_REQUIRED": "Mức độ câu hỏi không được bỏ trống",
+	"TYPE_IS_REQUIRED": "Trạng thái câu hỏi không được bỏ trống"
+}
