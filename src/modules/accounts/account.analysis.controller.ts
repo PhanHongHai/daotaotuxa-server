@@ -84,7 +84,7 @@ class AccountAnalysisController extends BaseController {
 			const { type } = req.query;
 			if (!type) throw new BadRequestException(this.messges.TYPE_ACCOUNT_IS_REQUIRED);
 			let totalMale = await this.accountRepository.getCount({ role: type, sex: 1 });
-			let totalFeMale = await this.accountRepository.getCount({ role: type, sex: 0 });
+			let totalFeMale = await this.accountRepository.getCount({ role: type, sex: 2 });
 			res.json({ totalFeMale, totalMale });
 		} catch (error) {
 			next(error);

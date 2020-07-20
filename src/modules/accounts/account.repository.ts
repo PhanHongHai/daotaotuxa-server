@@ -457,12 +457,14 @@ class AccountRepository {
 					},
 					totalAccountStudent: {
 						$sum: {
-							$cond: [{ $and: [{ $eq: ['$role', 'student'] }, { $eq: ['$isActived', true] }] }, 1, 0],
+							// $cond: [{ $and: [{ $eq: ['$role', 'student'] }, { $eq: ['$isActived', true] }] }, 1, 0],
+							$cond: [{ $eq: ['$role', 'student'] },1, 0],
 						},
 					},
 					totalAccountPartner: {
 						$sum: {
-							$cond: [{ $and: [{ $eq: ['$role', 'partner'] }, { $eq: ['$isActived', true] }] }, 1, 0],
+							// $cond: [{ $and: [{ $eq: ['$role', 'partner'] }, { $eq: ['$isActived', true] }] }, 1, 0],
+							$cond: [{ $eq: ['$role', 'partner']},1, 0 ],
 						},
 					},
 				},
@@ -604,7 +606,6 @@ class AccountRepository {
 			},
 		]);
 		return reports;
-		
 	}
 	async getReportAccountByYear(year: number, userID: string) {
 		const reports = await AccountModel.aggregate([

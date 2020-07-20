@@ -8,6 +8,10 @@ const ExamSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		point: {
+			type: Number,
+			required: true,
+		},
 		questions: [
 			{
 				type: Types.ObjectId,

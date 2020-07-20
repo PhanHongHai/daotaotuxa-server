@@ -357,7 +357,8 @@ class AccountController extends BaseController {
 					res.json(create);
 				})
 				.catch(err => {
-					if (err) throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
+					console.log(err);
+					 throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
 				});
 		} catch (error) {
 			next(error);
@@ -373,7 +374,7 @@ class AccountController extends BaseController {
 		try {
 			let file: any = await uploadSingle(req, res, 'file', 'image');
 			if (!file) throw new BadRequestException(this.messges.NO_FILE_SELECTED);
-			res.json({path: file.path, url: `uploads/images/${file.filename}` });
+			res.json({ path: file.path, url: `uploads/images/${file.filename}` });
 		} catch (error) {
 			next(error);
 		}
@@ -423,7 +424,7 @@ class AccountController extends BaseController {
 						res.json({ isUpdated: isUpdateEmail });
 					})
 					.catch(err => {
-						if (err) throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
+						throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
 					});
 			} else {
 				let isUpdate = await this.accountRepository.update(ID, data);
