@@ -40,27 +40,32 @@ class scheduleController extends BaseController {
 	async getAndSearch(req: any, res: any, next: any) {
 		try {
 			let { limit, page, keyword, startAt, endAt } = req.query;
-			const fromDate = moment(startAt)
-				.startOf('day')
-				.toDate();
-			const toDate = moment(endAt)
-				.startOf('day')
-				.toDate();
-			let schedules = await this.scheduleRepository.getAndSearch(limit, page, keyword, {
-				$and: [
-					{
-						dayAt: {
-							$gte: fromDate,
+			if (!startAt && !endAt) {
+				let schedules = await this.scheduleRepository.getAndSearch(limit, page, keyword);
+				res.json(schedules);
+			} else {
+				const fromDate = moment(startAt)
+					.startOf('day')
+					.toDate();
+				const toDate = moment(endAt)
+					.startOf('day')
+					.toDate();
+				let schedules = await this.scheduleRepository.getAndSearch(limit, page, keyword, {
+					$and: [
+						{
+							dayAt: {
+								$gte: fromDate,
+							},
 						},
-					},
-					{
-						dayAt: {
-							$lte: toDate,
+						{
+							dayAt: {
+								$lte: toDate,
+							},
 						},
-					},
-				],
-			});
-			res.json(schedules);
+					],
+				});
+				res.json(schedules);
+			}
 		} catch (error) {
 			next(error);
 		}
@@ -92,8 +97,26 @@ class scheduleController extends BaseController {
 	 */
 	async getScheduleByClassID(req: any, res: any, next: any) {
 		try {
-			let { limit, page, keyword, classID } = req.query;
+			let { limit, page, keyword, classID, startAt, endAt } = req.query;
+			const fromDate = moment(startAt)
+				.startOf('day')
+				.toDate();
+			const toDate = moment(endAt)
+				.startOf('day')
+				.toDate();
 			let schedulesData = await this.scheduleRepository.getAndSearchScheduleByOption(limit, page, keyword, {
+				$and: [
+					{
+						dayAt: {
+							$gte: fromDate,
+						},
+					},
+					{
+						dayAt: {
+							$lte: toDate,
+						},
+					},
+				],
 				classes: {
 					$elemMatch: {
 						$eq: classID,

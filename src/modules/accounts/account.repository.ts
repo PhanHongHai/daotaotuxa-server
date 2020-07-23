@@ -1,5 +1,11 @@
 import AccountModel from './account.model';
-import { IAccount, ICreateAccount, IUpdateAccount, IGetReportTotalOptions } from './account.interface';
+import {
+	IAccount,
+	ICreateAccount,
+	IUpdateAccount,
+	IGetReportTotalOptions,
+	ICreateStudentAccount,
+} from './account.interface';
 import mongoose, { Types } from 'mongoose';
 import moment from 'moment';
 
@@ -11,7 +17,7 @@ class AccountRepository {
 	 * get count by option
 	 * @param option oject
 	 */
-	async getCount(option: object): Promise<IAccount | any> {
+	async getCount(option: object): Promise<number> {
 		return await AccountModel.count({
 			...option,
 			isDeleted: false,
@@ -147,7 +153,7 @@ class AccountRepository {
 	 * create account
 	 * @param data object
 	 */
-	async create(data: ICreateAccount): Promise<IAccount | null> {
+	async create(data: ICreateAccount | ICreateStudentAccount): Promise<IAccount | null> {
 		return await AccountModel.create(data);
 	}
 	/**
@@ -340,7 +346,17 @@ class AccountRepository {
 					},
 					totalStudentCreateByPartner: {
 						$sum: {
-							$cond: [{ $and: [{ $eq: ['$role', 'student'] }, { $ifNull: ['$ownerID', false] }] }, 1, 0],
+							$cond: [
+								{
+									$and: [
+										{ $eq: ['$role', 'student'] },
+										{ $ifNull: ['$ownerID', false] },
+										{ $eq: ['$isApproved', false] },
+									],
+								},
+								1,
+								0,
+							],
 						},
 					},
 					totalStudentNotActive: {
@@ -458,13 +474,13 @@ class AccountRepository {
 					totalAccountStudent: {
 						$sum: {
 							// $cond: [{ $and: [{ $eq: ['$role', 'student'] }, { $eq: ['$isActived', true] }] }, 1, 0],
-							$cond: [{ $eq: ['$role', 'student'] },1, 0],
+							$cond: [{ $eq: ['$role', 'student'] }, 1, 0],
 						},
 					},
 					totalAccountPartner: {
 						$sum: {
 							// $cond: [{ $and: [{ $eq: ['$role', 'partner'] }, { $eq: ['$isActived', true] }] }, 1, 0],
-							$cond: [{ $eq: ['$role', 'partner']},1, 0 ],
+							$cond: [{ $eq: ['$role', 'partner'] }, 1, 0],
 						},
 					},
 				},

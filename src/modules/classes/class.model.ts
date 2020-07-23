@@ -9,6 +9,10 @@ const ClassSchemas = new Schema(
 			type: String,
 			required: true,
 		},
+		tag: {
+			type: String,
+			required: true,
+		},
 		trainingSectorID: {
 			type: Types.ObjectId,
 			ref: 'trainingSectors',

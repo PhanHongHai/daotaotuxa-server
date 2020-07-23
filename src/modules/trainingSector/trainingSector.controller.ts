@@ -17,8 +17,8 @@ class TrainingSectorController extends BaseController {
 	classRepository: ClassRepository;
 	classDetailRepository: ClassDetailRepository;
 	subjectRepository: SubjectRepository;
-	accountRepository : AccountRepository;
-	groupSubjectRepository : GroupSubjectRepository;
+	accountRepository: AccountRepository;
+	groupSubjectRepository: GroupSubjectRepository;
 
 	messges = getMessages('trainingSector', 'vi');
 
@@ -57,8 +57,6 @@ class TrainingSectorController extends BaseController {
 		}
 	}
 
-
-
 	/**
 	 * Get detail application data
 	 * @param req
@@ -90,6 +88,8 @@ class TrainingSectorController extends BaseController {
 			let data: ICreateITrainingSector = req.body;
 			let nameExistInType = await this.trainingSectorRepository.existNameInType(data.type, data.name);
 			if (nameExistInType) throw new BadRequestException(this.messges.NAME_IS_EXIST_IN_TYPE);
+			let tagExistInType = await this.trainingSectorRepository.getByOption({ tag: data.tag, type: data.type });
+			if (tagExistInType) throw new BadRequestException(this.messges.TAG_IS_EXIST_IN_TYPE);
 			let create = await this.trainingSectorRepository.create(data);
 			res.json(create);
 		} catch (error) {
@@ -124,6 +124,17 @@ class TrainingSectorController extends BaseController {
 				let nameExistInType = await this.trainingSectorRepository.existNameInType(data.type, data.name);
 				if (nameExistInType) throw new BadRequestException(this.messges.TYPE_AND_NAME_IS_EXIST);
 			}
+			if (data.tag && !data.type) {
+				let tagExistInType = await this.trainingSectorRepository.getByOption({
+					tag: data.tag,
+					type: trainingSectorData.type,
+				});
+				if (tagExistInType) throw new BadRequestException(this.messges.TAG_IS_EXIST_IN_TYPE);
+			}
+			if (data.tag && data.type) {
+				let tagExistInType = await this.trainingSectorRepository.getByOption({ tag: data.tag, type: data.type });
+				if (tagExistInType) throw new BadRequestException(this.messges.TAG_IS_EXIST_IN_TYPE);
+			}
 			let isUpdate = await this.trainingSectorRepository.update(ID, data);
 			res.json({ isUpdated: isUpdate });
 		} catch (error) {
@@ -149,34 +160,35 @@ class TrainingSectorController extends BaseController {
 			if (isDeleted) {
 				let isDeletedClass = await this.classRepository.removeMany({ trainingSectorID: ID });
 				if (isDeletedClass) {
-					let exsitGroupSubject = await this.groupSubjectRepository.findByOption({ sectorID: ID});
-					let deleteGroupSubject = await this.groupSubjectRepository.removeMany({ sectorID: ID});
-					if(deleteGroupSubject) {			
-						exsitGroupSubject.forEach( async(element) => {
-							await this.subjectRepository.removeMany({_id: element.subjectID})
+					let exsitGroupSubject = await this.groupSubjectRepository.findByOption({ sectorID: ID });
+					let deleteGroupSubject = await this.groupSubjectRepository.removeMany({ sectorID: ID });
+					if (deleteGroupSubject) {
+						exsitGroupSubject.forEach(async element => {
+							await this.subjectRepository.removeMany({ _id: element.subjectID });
 						});
-					}
-					let exsitClassDetail = await this.classDetailRepository.findByOption({ classID: ID});
-					let deleteClassDetail = await this.classDetailRepository.removeMany({ classID: ID });
-					if(deleteClassDetail) {			
-						exsitClassDetail.forEach( async(element) => {
-							await this.accountRepository.updateMany({_id: element.accountID}, {status: false})
-						});
-					}
-				}
+						let exsitClassDetail = await this.classDetailRepository.findByOption({ classID: ID });
+						let deleteClassDetail = await this.classDetailRepository.removeMany({ classID: ID });
+						if (deleteClassDetail) {
+							exsitClassDetail.forEach(async element => {
+								await this.accountRepository.updateMany({ _id: element.accountID }, { status: false });
+							});
+							res.json(deleteClassDetail);
+						} else res.json(deleteClassDetail);
+					} else res.json(deleteGroupSubject);
+				} else res.json(isDeletedClass);
 			} else res.json(isDeleted);
 		} catch (error) {
 			next(error);
 		}
 	}
 
-	// analysis account 
+	// analysis account
 	async analysisTrainingSector(req: any, res: any, next: any) {
 		try {
 			const countTrainingSector = await this.trainingSectorRepository.getCount({});
-			const countClass = await this.classRepository.getCount({})
-			const countSubject = await this.subjectRepository.getCount({})
-			res.json({countTrainingSector, countClass, countSubject});
+			const countClass = await this.classRepository.getCount({});
+			const countSubject = await this.subjectRepository.getCount({});
+			res.json({ countTrainingSector, countClass, countSubject });
 		} catch (error) {
 			next(error);
 		}

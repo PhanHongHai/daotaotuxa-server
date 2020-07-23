@@ -86,7 +86,7 @@ class ScheduleRepository {
 	 */
 	async getByOption(option: object, select: string = ''): Promise<ISubjectProgress | any> {
 		return await subjectProgressModel
-			.find({
+			.findOne({
 				...option,
 				isDeleted: false,
 			})

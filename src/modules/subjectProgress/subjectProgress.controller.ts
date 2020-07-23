@@ -102,10 +102,12 @@ class SubjectProgressController extends BaseController {
 					documents: subjectProgressData.documents,
 					progress: subjectProgressData.progress,
 				});
+				console.log(updateSubject);
 				res.json({ isProcessed: updateSubject });
+			} else {
+				let subjectsProgress = await this.subjectProgressRepository.create(subjectProgressData);
+				res.json({ isProcessed: true, data: subjectsProgress });
 			}
-			let subjectsProgress = await this.subjectProgressRepository.create(subjectProgressData);
-			res.json({ isProcessed: true, data: subjectsProgress });
 		} catch (error) {
 			next(error);
 		}

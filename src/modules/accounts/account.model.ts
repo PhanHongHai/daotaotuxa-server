@@ -11,11 +11,15 @@ const AccountSchema = new Schema(
 	{
 		email: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		password: {
 			type: String,
 			required: true,
+		},
+		tag:{
+			type:String,
+			default:true
 		},
 		name: {
 			type: String,
@@ -63,7 +67,7 @@ const AccountSchema = new Schema(
 			ref: 'accounts',
 			required: false,
 		},
-		status: {
+		isInClass: {
 			type: Boolean,
 			default: false,
 			required: true,

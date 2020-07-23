@@ -2,6 +2,7 @@ import { Types, Document } from 'mongoose';
 export interface ITrainingSector extends Document {
     _id:Types.ObjectId,
     name:String,
+    tag:String,
     type:String,
     isDeleted:Boolean,
     createdAt: Date,
@@ -10,11 +11,13 @@ export interface ITrainingSector extends Document {
 
 export interface ICreateITrainingSector extends Document {
     name:String,
+    tag:String,
     type:String,
     isDeleted:Boolean
 }
 export interface IUpdateITrainingSector extends Document {
     name:String,
+    tag:String,
     type:String,
     isDeleted:Boolean
 }

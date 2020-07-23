@@ -3,6 +3,7 @@ export interface IClass extends Document {
     _id:Types.ObjectId,
     trainingSectorID:Types.ObjectId,
     name:String,
+    tag:String,
     startAt:Date,
     endtAt:Date,
     status:String,
@@ -13,6 +14,8 @@ export interface IClass extends Document {
 
 export interface ICreateClass extends Document {
     trainingSectorID:Types.ObjectId,
+    tag:String,
+    prefixTag:String,
     name:String,
     startAt:Date,
     endtAt:Date,
@@ -22,6 +25,7 @@ export interface ICreateClass extends Document {
 export interface IUpdateClass extends Document {
     trainingSectorID:Types.ObjectId,
     name:String,
+    prefixTag:Date,
     startAt:Date,
     endtAt:Date,
     status:String,

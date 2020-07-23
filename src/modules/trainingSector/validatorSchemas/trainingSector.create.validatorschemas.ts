@@ -21,6 +21,14 @@ export const CreateTrainingSectorValidatorSchema: ValidationSchema = {
 				message: messages.NAME_MAX_IS_150,
 			},
     ],
+    tag: [
+      {
+        type: 'isDefined',
+        constraints : [true],
+        message: messages.TAG_IS_REQUIRED
+      },
+      
+    ],
     type: [
       {
         type: 'isDefined',

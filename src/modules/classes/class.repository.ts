@@ -7,8 +7,8 @@ class ClassRepository {
 	constructor() {}
 
 	// count number class
-	async countNumberClass(): Promise<number> {
-		return await ClassModel.count({ isDeleted: false });
+	async countNumberClass(option: object = {}): Promise<number> {
+		return await ClassModel.count({ isDeleted: false, ...option });
 	}
 
 	// search class with keyword: name or status

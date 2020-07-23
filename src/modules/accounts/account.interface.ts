@@ -42,6 +42,20 @@ export interface ICreateAccount extends Document {
 	tokenVerify: String;
 	isApproved:Boolean;
 }
+export interface ICreateStudentAccount extends Document {
+	name: String;
+	tag: String;
+	password: String;
+	sex: Number;
+	birthDay: Date;
+	idCard: Number;
+	phoneNumber: String;
+	address: String;
+	country: String;
+	role: String;
+	ownerID: Types.ObjectId;
+	isApproved:Boolean;
+}
 
 export interface IUpdateAccount extends Document {
 	name: String;

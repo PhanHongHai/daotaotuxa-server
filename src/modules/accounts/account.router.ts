@@ -14,6 +14,7 @@ import {
 	CreateAccountPartnerValidatorSchema,
 	CreateAccountStudentValidatorSchema,
 	CreateAccountTeacherValidatorSchema,
+	CreateAccountEmploymentValidatorSchema,
 } from './validatorSchemas/account.create.validatorSchemas';
 import { UpdateAccountValidatorSchema } from './validatorSchemas/account.update.validatorSchemas';
 import { AuthPasswordValidatorSchemas } from './validatorSchemas/account.authPassword.validatorSchema';
@@ -78,11 +79,15 @@ router.post('/admin', validatorBody(CreateAccountAdminValidatorSchema), accountC
 // Create account teacher
 router.post('/teacher', validatorBody(CreateAccountTeacherValidatorSchema), accountController.createAccountNormal);
 // Create account student
-router.post('/student', validatorBody(CreateAccountStudentValidatorSchema), accountController.createAccountNormal);
+router.post('/student', validatorBody(CreateAccountStudentValidatorSchema), accountController.createAccountStudent);
 // Create account partner
 router.post('/partner', validatorBody(CreateAccountPartnerValidatorSchema), accountController.createAccountNormal);
+// Create account partner
+router.post(
+	'/employment',
+	validatorBody(CreateAccountEmploymentValidatorSchema),
+	accountController.createAccountNormal,
+);
 // get accounts by OwnerID
-
-
 
 export default router;

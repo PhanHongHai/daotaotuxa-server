@@ -10,14 +10,14 @@ import { CreateScheduleValidatorSchema } from './validatorSchemas/schedule.creat
 const scheduleController = new ScheduleController();
 var router = express.Router();
 
-router.use(authorize(['admin', 'teacher']));
-
+router.use(authorize(['admin', 'teacher', 'student']));
+// get schedule by classID
+router.get('/get-schedule',validatorQuery(GetListValidatorSchemas),scheduleController.getScheduleByClassID)
 // get and search schedules
 router.get('/', validatorQuery(GetListValidatorSchemas), scheduleController.getAndSearch);
 // get detail schedule
 router.get('/:ID', validatorParam(IdMongoValidatorSchemas), scheduleController.getDetail);
-// get schedule by classID
-router.get('/get-schedule',validatorQuery(GetListValidatorSchemas),scheduleController.getScheduleByClassID)
+
 // create new schedule
 router.post(
 	'/',

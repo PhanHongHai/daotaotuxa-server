@@ -173,10 +173,12 @@ class ClassController extends BaseController {
 			if (data.trainingSectorID) {
 				let existTrainingSector = await this.trainingSectorRepository.getById(data.trainingSectorID);
 				if (!existTrainingSector) throw new BadRequestException(this.messges.TRAININGSECTOR_IS_NOT_EXIST);
+				let totalClassByType = await this.ClassRepository.getCount({ trainingSectorID: data.trainingSectorID });
+				data.status = 'OP';
+				data.tag = data.prefixTag + (totalClassByType + 1);
+				let create = await this.ClassRepository.create(data);
+				res.json(create);
 			}
-			data.status = 'OP';
-			let create = await this.ClassRepository.create(data);
-			res.json(create);
 		} catch (error) {
 			next(error);
 		}

@@ -11,13 +11,20 @@ import {
 	InternalServerErrorException,
 } from '../../common/error';
 // interfaces
-import { ICreateAccount, IUpdateAccount, IChangePassword, IResetPassword } from './account.interface';
+import {
+	ICreateAccount,
+	IUpdateAccount,
+	IChangePassword,
+	IResetPassword,
+	ICreateStudentAccount,
+} from './account.interface';
 // message
 import { getMessages } from '../../common/messages/index';
 import { SendMail, verifyAccountOptions } from '../../helpers/sendMail.helper';
 import ClassDetailRepository from '../classDetail/classDetail.repository';
 import ProFileRepository from '../proFiles/proFile.repository';
 import { uploadSingle } from './../upload/upload.services';
+import moment from 'moment';
 
 const jwt = require('jsonwebtoken');
 const salt = bcrypt.genSaltSync(10);
@@ -41,10 +48,10 @@ class AccountController extends BaseController {
 	 */
 	async getAndSearchAccount(req: any, res: any, next: any) {
 		try {
-			let { limit, page, type, status, keyword } = req.query;
+			let { limit, page, type, isInClass, keyword } = req.query;
 			let { userID } = req;
 			let account;
-			if (!type && !status) {
+			if (!type && !isInClass) {
 				account = await this.accountRepository.search(
 					keyword,
 					{ role: { $ne: 'admin' }, _id: { $ne: userID } },
@@ -52,7 +59,7 @@ class AccountController extends BaseController {
 					page,
 				);
 			}
-			if (type && !status) {
+			if (type && !isInClass) {
 				account = await this.accountRepository.search(
 					keyword,
 					{ role: { $ne: 'admin', $eq: type }, _id: { $ne: userID } },
@@ -60,10 +67,10 @@ class AccountController extends BaseController {
 					page,
 				);
 			}
-			if (type && status) {
+			if (type && isInClass) {
 				account = await this.accountRepository.search(
 					keyword,
-					{ role: { $ne: 'admin', $eq: type }, _id: { $ne: userID }, status: { $in: status } },
+					{ role: { $ne: 'admin', $eq: type }, _id: { $ne: userID }, isInClass: { $in: isInClass } },
 					limit,
 					page,
 				);
@@ -80,7 +87,7 @@ class AccountController extends BaseController {
 			let { limit, page, type, keyword } = req.query;
 			let account = await this.accountRepository.search(
 				keyword,
-				{ role: { $ne: 'admin', $eq: type }, isApproved: true, status: false },
+				{ role: { $ne: 'admin', $eq: type }, isApproved: true, isInClass: false },
 				limit,
 				page,
 			);
@@ -95,7 +102,7 @@ class AccountController extends BaseController {
 			let { limit, page, type, keyword } = req.query;
 			let account = await this.accountRepository.search(
 				keyword,
-				{ role: { $ne: 'admin', $eq: type }, status: false, isApproved: false },
+				{ role: { $ne: 'admin', $eq: type }, isInClass: false, isApproved: false },
 				limit,
 				page,
 			);
@@ -114,7 +121,6 @@ class AccountController extends BaseController {
 		try {
 			const { ID } = req.params;
 			const appData = await this.accountRepository.getById(ID, {}, '-password');
-			console.log(appData);
 			if (!appData) {
 				throw new NotFoundException(this.messges.ACCOUNT_IS_NOT_FOUND);
 			} else res.json(appData);
@@ -357,9 +363,45 @@ class AccountController extends BaseController {
 					res.json(create);
 				})
 				.catch(err => {
-					console.log(err);
-					 throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
+					throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
 				});
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * Create account student
+	 * @param req
+	 * @param res
+	 * @param next
+	 */
+	async createAccountStudent(req: any, res: any, next: any) {
+		try {
+			const dataBody: ICreateStudentAccount = req.body;
+			const { userID } = req;
+			let countAccountStudent = await this.accountRepository.getCount({ role: 'student' });
+			let userData = await this.accountRepository.getById(userID, {}, '-password');
+			if (!userData) throw new UnauthorizedException(this.messges.CANNOT_ACCESS);
+			if (userData && userData.role === 'partner' && dataBody.role === 'student') {
+				dataBody.ownerID = userID;
+				dataBody.isApproved = false;
+			}
+			if (dataBody.role === 'admin') {
+				throw new BadRequestException(this.messges.CREATE_ACCOUNT_NORMAL);
+			}
+			if (dataBody.phoneNumber) {
+				let mobilePhoneExist = await this.accountRepository.getAccountByOption({ phoneNumber: dataBody.phoneNumber });
+				if (mobilePhoneExist) throw new BadRequestException(this.messges.PHONE_IS_EXIST);
+			}
+			if (dataBody.idCard) {
+				let idCardExist = await this.accountRepository.getAccountByOption({ idCard: dataBody.idCard });
+				if (idCardExist) throw new BadRequestException(this.messges.IDCARD_IS_EXIST);
+			}
+			let sttAccount = countAccountStudent + 1;
+			dataBody.tag = moment().year() + '' + sttAccount;
+			dataBody.password = moment(dataBody.birthDay).format('DDMMYYYY');
+			let create = await this.accountRepository.create(dataBody);
+			res.json(create);
 		} catch (error) {
 			next(error);
 		}

@@ -97,21 +97,21 @@ class ClassDetailController extends BaseController {
 				});
 				if (exsitTeacher) {
 					await this.ClassDetailRepository.remove(exsitTeacher._id);
-					await this.AccountRepository.update(exsitTeacher.accountID, { status: false });
+					await this.AccountRepository.update(exsitTeacher.accountID, { isInClass: false });
 					data.typeAccount = 'teacher';
 					let create = await this.ClassDetailRepository.create(data);
-					if (create) await this.AccountRepository.update(data.accountID, { status: true });
+					if (create) await this.AccountRepository.update(data.accountID, { isInClass: true });
 					res.json(create);
 				} else {
 					data.typeAccount = 'teacher';
 					let create = await this.ClassDetailRepository.create(data);
-					if (create) await this.AccountRepository.update(data.accountID, { status: true });
+					if (create) await this.AccountRepository.update(data.accountID, { isInClass: true });
 					res.json(create);
 				}
 			}
 			if (verifyAccountID && verifyAccountID.role === 'student') {
 				let create = await this.ClassDetailRepository.create(data);
-				if (create) await this.AccountRepository.update(data.accountID, { status: true });
+				if (create) await this.AccountRepository.update(data.accountID, { isInClass: true });
 				res.json(create);
 			}
 		} catch (error) {
@@ -134,7 +134,7 @@ class ClassDetailController extends BaseController {
 				throw new NotFoundException(this.messges.NOT_FOUNT_CLASS_DETAILE_DELETE);
 			}
 			const isDeleted = await this.ClassDetailRepository.remove(ID);
-			if (isDeleted) await this.AccountRepository.update(exisitAccount.accountID, { status: false });
+			if (isDeleted) await this.AccountRepository.update(exisitAccount.accountID, { isInClass: false });
 			res.json(isDeleted);
 		} catch (error) {
 			next(error);
