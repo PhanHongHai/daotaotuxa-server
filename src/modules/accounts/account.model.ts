@@ -19,7 +19,7 @@ const AccountSchema = new Schema(
 		},
 		tag:{
 			type:String,
-			default:true
+			required: false,
 		},
 		name: {
 			type: String,
@@ -61,7 +61,6 @@ const AccountSchema = new Schema(
 			type: String,
 			required: true,
 		},
-
 		ownerID: {
 			type: Types.ObjectId,
 			ref: 'accounts',
@@ -96,7 +95,7 @@ const AccountSchema = new Schema(
 		isActived: {
 			type: Boolean,
 			default: false,
-			required: true,
+			required: false,
 		},
 		isDeleted: {
 			type: Boolean,

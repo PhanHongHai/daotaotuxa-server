@@ -59,8 +59,41 @@ class QuestionRepository {
 	 * get questions random
 	 * @param option
 	 */
-	async getQuestionsRandom(size: Number, option: object = {}) {
-		return QuestionModel.aggregate([{ $match: { ...option, isDeleted: false } }, { $sample: { size } }]);
+	async getQuestionsRandom(size: Number, level: Number, randomSkip: Number, option: object = {}) {
+		return QuestionModel.aggregate([
+			{ $match: { ...option, isDeleted: false, level } },
+			{ $skip: randomSkip },
+			{ $limit: size },
+		]);
+	}
+	/**
+	 * get number question
+	 * @param option
+	 */
+	async counQuestionByLevel(option: object = {}, level: number): Promise<number> {
+		// const reports = await QuestionModel.aggregate([
+		// 	{ $match: { isDeleted: false } },
+		// 	{
+		// 		$group: {
+		// 			_id: null,
+		// 			$sum: {
+		// 				$cond: [
+		// 					{
+		// 						$and: [{ ...option }, { $eq: ['$level', level] }],
+		// 					},
+		// 					1,
+		// 					0,
+		// 				],
+		// 			},
+		// 		},
+		// 	},
+		// 	{
+		// 		$project: {
+		// 			_id: 0,
+		// 		},
+		// 	},
+		// ]);
+		return QuestionModel.count({ $and: [{ ...option }, { level }, { isDeleted: false }] });
 	}
 	/**
 	 * get number question

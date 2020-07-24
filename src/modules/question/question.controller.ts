@@ -30,21 +30,21 @@ class QuestionController extends BaseController {
 			next(error);
 		}
 	}
-	/**
-	 * get questions random
-	 * @param req
-	 * @param res
-	 * @param next
-	 */
-	async getQuestionsRandom(req: any, res: any, next: any) {
-		try {
-			let { size, type, level } = req.query;
-			let questions = await this.questionRepository.getQuestionsRandom(size, { type, level });
-			res.json(questions);
-		} catch (error) {
-			next(error);
-		}
-	}
+	// /**
+	//  * get questions random
+	//  * @param req
+	//  * @param res
+	//  * @param next
+	//  */
+	// async getQuestionsRandom(req: any, res: any, next: any) {
+	// 	try {
+	// 		let { size, type, level } = req.query;
+	// 		let questions = await this.questionRepository.getQuestionsRandom(size, { type, level });
+	// 		res.json(questions);
+	// 	} catch (error) {
+	// 		next(error);
+	// 	}
+	// }
 	/**
 	 * get questions random
 	 * @param req

@@ -5,5 +5,6 @@
 	"TITLE_IS_REQUIRED": "Tiêu đề không được để trống",
 	"NUMBER_IS_REQUIRED": "Số lượng câu hỏi không được để trống",
 	"QUESTIONS_IS_REQUIRED": "Danh sách câu hỏi không được để trống",
-	"LEVEL_QUESTION_IS_REQUIRED": "Tập các câu hỏi không được để trống"
+	"LEVEL_QUESTION_IS_REQUIRED": "Tập các câu hỏi không được để trống",
+	"POINT_IS_REQUIRED": "Điểm mỗi câu hỏi không được để trống"
 }
