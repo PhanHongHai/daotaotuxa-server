@@ -56,7 +56,7 @@ class ExamRepository {
 	 * @param page
 	 */
 
-	async getAndSearch(limit: Number = 10, page: Number = 1, keyword: string = '',data: any = {},) {
+	async getAndSearch(limit: Number = 10, page: Number = 1, keyword: string = '', data: any = {}) {
 		const regex = new RegExp(keyword, 'i');
 		return ExamModel.paginate(
 			{
@@ -65,7 +65,14 @@ class ExamRepository {
 				...data,
 			},
 			{
-				populate: 'questions',
+				populate: [
+					{
+						path: 'questions',
+					},
+					{
+						path: 'subjectID',
+					},
+				],
 				sort: { createAt: -1 },
 				limit: Number(limit),
 				page: Number(page),
@@ -81,7 +88,10 @@ class ExamRepository {
 		return ExamModel.findOne({
 			isDeleted: false,
 			_id: ID,
-		}).populate('questions').select(select);
+		})
+			.populate('questions')
+			.populate('subjectID')
+			.select(select);
 	}
 
 	/**

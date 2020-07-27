@@ -1,6 +1,7 @@
 import { Document, Types } from 'mongoose';
 export interface IExam extends Document {
 	_id: Types.ObjectId;
+	subjectID: Types.ObjectId;
 	title: String;
 	point: Number;
 	questions: [Types.ObjectId];
@@ -11,11 +12,13 @@ export interface ICreateExam extends Document {
 	title: String;
 	point: Number;
 	questions: [Types.ObjectId];
+	subjectID: Types.ObjectId;
 }
 
 export interface ICreateExamAuto extends Document {
 	title: String;
 	point: Number;
+	subjectID:string;
 	level1: {
 		type: Number;
 		number: Number;

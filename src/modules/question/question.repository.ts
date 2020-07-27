@@ -27,6 +27,7 @@ class QuestionRepository {
 				...option,
 			},
 			{
+				populate: 'tag',
 				sort: { createAt: -1 },
 				limit: Number(limit),
 				page: Number(page),
@@ -43,7 +44,9 @@ class QuestionRepository {
 		return QuestionModel.findOne({
 			isDeleted: false,
 			_id: ID,
-		}).select(select);
+		})
+			.populate('tag')
+			.select(select);
 	}
 	/**
 	 * get question by option
@@ -70,30 +73,34 @@ class QuestionRepository {
 	 * get number question
 	 * @param option
 	 */
-	async counQuestionByLevel(option: object = {}, level: number): Promise<number> {
-		// const reports = await QuestionModel.aggregate([
-		// 	{ $match: { isDeleted: false } },
-		// 	{
-		// 		$group: {
-		// 			_id: null,
-		// 			$sum: {
-		// 				$cond: [
-		// 					{
-		// 						$and: [{ ...option }, { $eq: ['$level', level] }],
-		// 					},
-		// 					1,
-		// 					0,
-		// 				],
-		// 			},
-		// 		},
-		// 	},
-		// 	{
-		// 		$project: {
-		// 			_id: 0,
-		// 		},
-		// 	},
-		// ]);
-		return QuestionModel.count({ $and: [{ ...option }, { level }, { isDeleted: false }] });
+	async counQuestionByLevel(option: object = {}, tag: string, level: number): Promise<number> {
+		const reports = await QuestionModel.aggregate([
+			{ $match: { ...option, isDeleted: false, tag: Types.ObjectId(tag) } },
+			{
+				$group: {
+					_id: 0,
+					total: {
+						$sum: {
+							$cond: [
+								{
+									$eq: ['$level', level],
+								},
+								1,
+								0,
+							],
+						},
+					},
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					total: 1,
+				},
+			},
+		]);
+		return reports ? reports[0].total : 0;
+		//	return QuestionModel.count({ $and: [{ ...option }, { level }, { isDeleted: false }] });
 	}
 	/**
 	 * get number question
@@ -104,9 +111,10 @@ class QuestionRepository {
 		typeLevel2: object = {},
 		typeLevel3: object = {},
 		typeLevel4: object = {},
+		option: object = {},
 	) {
 		const reports = await QuestionModel.aggregate([
-			{ $match: { isDeleted: false } },
+			{ $match: { ...option, isDeleted: false } },
 			{
 				$group: {
 					_id: 0,

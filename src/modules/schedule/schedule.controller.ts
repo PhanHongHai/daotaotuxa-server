@@ -104,26 +104,38 @@ class scheduleController extends BaseController {
 			const toDate = moment(endAt)
 				.startOf('day')
 				.toDate();
-			let schedulesData = await this.scheduleRepository.getAndSearchScheduleByOption(limit, page, keyword, {
-				$and: [
-					{
-						dayAt: {
-							$gte: fromDate,
+			if (startAt && endAt) {
+				let schedulesData = await this.scheduleRepository.getAndSearchScheduleByOption(limit, page, keyword, {
+					$and: [
+						{
+							dayAt: {
+								$gte: fromDate,
+							},
+						},
+						{
+							dayAt: {
+								$lte: toDate,
+							},
+						},
+					],
+					classes: {
+						$elemMatch: {
+							$eq: classID,
 						},
 					},
-					{
-						dayAt: {
-							$lte: toDate,
+				});
+				res.json(schedulesData);
+			}
+			else{
+				let schedulesData = await this.scheduleRepository.getAndSearchScheduleByOption(limit, page, keyword, {
+					classes: {
+						$elemMatch: {
+							$eq: classID,
 						},
 					},
-				],
-				classes: {
-					$elemMatch: {
-						$eq: classID,
-					},
-				},
-			});
-			res.json(schedulesData);
+				});
+				res.json(schedulesData);
+			}
 		} catch (error) {
 			next(error);
 		}

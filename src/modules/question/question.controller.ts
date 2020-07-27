@@ -3,6 +3,7 @@ import { BadRequestException } from '../../common/error';
 import { getMessages } from '../../common/messages/index';
 import QuestionRepository from './question.repository';
 import { ICreateQuestion, IUpdateQuestion } from './question.interface';
+import { Types } from 'mongoose';
 
 class QuestionController extends BaseController {
 	questionRepository: QuestionRepository;
@@ -20,10 +21,11 @@ class QuestionController extends BaseController {
 	 */
 	async getAndSearch(req: any, res: any, next: any) {
 		try {
-			let { limit, page, keyword, type, level } = req.query;
+			let { limit, page, keyword, type, level, tag } = req.query;
 			let option = {};
 			if (type != 2) option = { ...option, type };
 			if (level != 0) option = { ...option, level };
+			if (tag && tag != '') option = { ...option, tag };
 			let questions = await this.questionRepository.getAndSearch(limit, page, keyword, option);
 			res.json(questions);
 		} catch (error) {
@@ -53,7 +55,8 @@ class QuestionController extends BaseController {
 	 */
 	async getNumberQuestion(req: any, res: any, next: any) {
 		try {
-			let { typeLevel1, typeLevel2, typeLevel3, typeLevel4 } = req.query;
+			let { typeLevel1, typeLevel2, typeLevel3, typeLevel4, tag } = req.query;
+			let option = tag == '' ? {} : { tag:Types.ObjectId(tag) };
 			let optionLevel1 = typeLevel1 == 2 ? {} : { $eq: ['$type', Number(typeLevel1)] };
 			let optionLevel2 = typeLevel2 == 2 ? {} : { $eq: ['$type', Number(typeLevel2)] };
 			let optionLevel3 = typeLevel3 == 2 ? {} : { $eq: ['$type', Number(typeLevel3)] };
@@ -63,6 +66,7 @@ class QuestionController extends BaseController {
 				optionLevel2,
 				optionLevel3,
 				optionLevel4,
+				option,
 			);
 			res.json(numberQuestion);
 		} catch (error) {

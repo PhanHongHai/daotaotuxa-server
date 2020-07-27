@@ -7,6 +7,7 @@ import QuestionRepository from '../question/question.repository';
 import suffle from '../../utils/randomEleArr';
 
 import { ICreateExam, IUpdateExam, ICreateExamAuto } from './exam.interface';
+import { Types } from 'mongoose';
 
 class ExamController extends BaseController {
 	examRepository: ExamRepository;
@@ -85,33 +86,33 @@ class ExamController extends BaseController {
 			let existExam = await this.examRepository.getByOption({ title: examData.title });
 			if (existExam && existExam.length > 0) throw new BadRequestException(this.messges.EXAM_IS_EXIST);
 			if (level1.number > 0) {
-				let option = level1.type != 2 ? { type: level1.type } : {};
+				let option = level1.type != 2 ? { type: Number(level1.type), tag: Types.ObjectId(examData.subjectID) } : {};
 				let optionLevel1 = level1.type == 2 ? {} : { type: Number(level1.type) };
-				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel1, 1);
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel1, examData.subjectID, 1);
 				let random = Math.floor(Math.random() * countQuestion);
 				let questionLevel1 = await this.questionRepository.getQuestionsRandom(level1.number, 1, random, option);
 				if (questionLevel1 && questionLevel1.length > 0) questionLevel1.forEach(ele => questionsExam.push(ele._id));
 			}
 			if (level2.number > 0) {
-				let option = level2.type != 2 ? { type: level2.type } : {};
+				let option = level2.type != 2 ? { type: Number(level2.type), tag: Types.ObjectId(examData.subjectID) } : {};
 				let optionLevel2 = level2.type == 2 ? {} : { type: Number(level2.type) };
-				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel2, 2);
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel2, examData.subjectID, 2);
 				let random = Math.floor(Math.random() * countQuestion);
 				let questionLevel2 = await this.questionRepository.getQuestionsRandom(level2.number, 2, random, option);
 				if (questionLevel2 && questionLevel2.length > 0) questionLevel2.forEach(ele => questionsExam.push(ele._id));
 			}
 			if (level3.number > 0) {
-				let option = level3.type != 2 ? { type: level3.type } : {};
+				let option = level3.type != 2 ? { type: Number(level3.type), tag: Types.ObjectId(examData.subjectID) } : {};
 				let optionLevel3 = level3.type == 2 ? {} : { type: Number(level3.type) };
-				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel3, 3);
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel3, examData.subjectID, 3);
 				let random = Math.floor(Math.random() * countQuestion);
 				let questionLeve3 = await this.questionRepository.getQuestionsRandom(level3.number, 3, random, option);
 				if (questionLeve3 && questionLeve3.length > 0) questionLeve3.forEach(ele => questionsExam.push(ele._id));
 			}
 			if (level4.number > 0) {
-				let option = level4.type != 2 ? { type: level4.type } : {};
+				let option = level4.type != 2 ? { type: Number(level4.type), tag: Types.ObjectId(examData.subjectID) } : {};
 				let optionLevel4 = level4.type == 2 ? {} : { type: Number(level4.type) };
-				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel4, 4);
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel4, examData.subjectID, 4);
 				let random = Math.floor(Math.random() * countQuestion);
 				let questionLevel4 = await this.questionRepository.getQuestionsRandom(level4.number, 4, random, option);
 				if (questionLevel4 && questionLevel4.length > 0) questionLevel4.forEach(ele => questionsExam.push(ele._id));
@@ -119,6 +120,7 @@ class ExamController extends BaseController {
 			let create = await this.examRepository.create({
 				title: examData.title,
 				point: examData.point,
+				subjectID: examData.subjectID,
 				questions: suffle(questionsExam),
 			});
 			res.json(create);

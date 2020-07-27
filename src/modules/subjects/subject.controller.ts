@@ -40,6 +40,7 @@ class SubjectController extends BaseController {
 		try {
 			let { limit, page, keyword } = req.query;
 			let subjects = await this.subjectRepository.getAndSearch(keyword, limit, page);
+			console.log(subjects);
 			res.json(subjects);
 		} catch (error) {
 			next(error);
@@ -51,8 +52,7 @@ class SubjectController extends BaseController {
 			let { limit, page, keyword } = req.query;
 			const skip = Number(page) * Number(limit) - Number(limit);
 			let documents = await this.subjectRepository.getAndSearchSubjectGroupDocument(keyword, Number(limit), skip);
-			let totalDoc = documents.length;
-			res.json({ docs: documents, total: totalDoc, limit, page });
+			res.json({ docs: documents, total: documents.length, limit, page });
 		} catch (error) {
 			next(error);
 		}

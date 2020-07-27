@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 import { IQuestion } from './question.interface';
 import mongoosePaginate from 'mongoose-paginate';
 const QuestionSchema = new Schema(
@@ -9,8 +9,9 @@ const QuestionSchema = new Schema(
 			required: true,
 		},
 		tag: {
-			type: [String],
-			required: false,
+			type: Types.ObjectId,
+			ref: 'subjects',
+			required: true,
 		},
 		answerA: {
 			type: String,

@@ -2,7 +2,7 @@ import {Document, Types} from 'mongoose';
 
 export interface ITimeKeeping extends Document {
     accountID: Types.ObjectId;
-    date: Date;
+    date: String;
     createdAt: Date;
     isDeleted: Boolean;
 }

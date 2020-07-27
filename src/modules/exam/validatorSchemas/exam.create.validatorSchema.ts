@@ -16,6 +16,12 @@ export const CreateExamValidatorSchema: ValidationSchema = {
 				message: messages.POINT_IS_REQUIRED,
 			},
 		],
+		subjectID: [
+			{
+				type: 'isDefined',
+				message: messages.SUBJECT_IS_REQUIRED,
+			},
+		],
 		questions: [
 			{
 				type: 'isDefined',

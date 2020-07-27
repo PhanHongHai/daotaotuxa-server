@@ -309,10 +309,10 @@ class AccountController extends BaseController {
 				let mobilePhoneExist = await this.accountRepository.getAccountByOption({ phoneNumber: data.phoneNumber });
 				if (mobilePhoneExist) throw new BadRequestException(this.messges.PHONE_IS_EXIST);
 			}
-			if (data.idCard) {
-				let idCardExist = await this.accountRepository.getAccountByOption({ idCard: data.idCard });
-				if (idCardExist) throw new BadRequestException(this.messges.IDCARD_IS_EXIST);
-			}
+			// if (data.idCard) {
+			// 	let idCardExist = await this.accountRepository.getAccountByOption({ idCard: data.idCard });
+			// 	if (idCardExist) throw new BadRequestException(this.messges.IDCARD_IS_EXIST);
+			// }
 			let create = await this.accountRepository.create(data);
 			res.json(create);
 		} catch (error) {
@@ -352,19 +352,20 @@ class AccountController extends BaseController {
 			}
 			dataBody.tokenVerify = uuidv4();
 			let create = await this.accountRepository.create(dataBody);
-			SendMail(
-				verifyAccountOptions({
-					email: dataBody.email,
-					title: 'Đào tạo từ xa: Kích hoạt tài khoản',
-					content: `Xác thực tài khoản tại ${process.env.HOST_CLIENT}/active/${dataBody.tokenVerify}`,
-				}),
-			)
-				.then(success => {
-					res.json(create);
-				})
-				.catch(err => {
-					throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
-				});
+			// SendMail(
+			// 	verifyAccountOptions({
+			// 		email: dataBody.email,
+			// 		title: 'Đào tạo từ xa: Kích hoạt tài khoản',
+			// 		content: `Xác thực tài khoản tại ${process.env.HOST_CLIENT}/active/${dataBody.tokenVerify}`,
+			// 	}),
+			// )
+			// 	.then(success => {
+			// 		res.json(create);
+			// 	})
+			// 	.catch(err => {
+			// 		throw new InternalServerErrorException(this.messges.ERROR_SEND_EMAIL);
+			// 	});
+			res.json(create);
 		} catch (error) {
 			next(error);
 		}

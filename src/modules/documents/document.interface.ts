@@ -7,6 +7,7 @@ export interface IDocument extends Document{
     url: string;
     size: string;
     type: string;
+    typeFile: string;
     isDeleted: Boolean;
     createsAt: Date;
 }
@@ -17,7 +18,7 @@ export interface ICreateDocument extends Document{
     url: string;
     size: string;
     type: string;
-
+    typeFile: string;
 }
 export interface IUpdateDocument extends Document{
     subjectID: Types.ObjectId;
@@ -25,4 +26,5 @@ export interface IUpdateDocument extends Document{
     path: string;
     url: string;
     size: string;
+    typeFile: string;
 }

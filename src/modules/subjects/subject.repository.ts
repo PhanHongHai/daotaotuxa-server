@@ -38,8 +38,8 @@ class SubjectRepository {
 					$or: [{ name: { $regex: regex } }, { tag: { $regex: regex } }],
 				},
 			},
-			{ $limit: limit },
 			{ $skip: skip },
+			{ $limit: limit },
 			{
 				$lookup: {
 					from: 'documents',

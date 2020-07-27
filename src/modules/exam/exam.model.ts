@@ -12,6 +12,11 @@ const ExamSchema = new Schema(
 			type: Number,
 			required: true,
 		},
+		subjectID: {
+			type: Types.ObjectId,
+			ref: 'subjects',
+			required: true,
+		},
 		questions: [
 			{
 				type: Types.ObjectId,
