@@ -25,3 +25,22 @@ export const LoginAccountValidatorSchema: ValidationSchema = {
     ],
 }
 };
+export const LoginAccountStudentValidatorSchema: ValidationSchema = {
+  name: 'LoginAccountStudentValidatorSchema',
+  properties: {
+    tag: [
+      {
+        type: 'isDefined',
+        constraints : [true],
+        message: messages.TAG_IS_REQUIRED
+      },
+    ],
+    password: [
+      {
+        type: 'isDefined',
+        message: messages.PASSWORD_IS_REQUIRED
+      }
+     
+    ],
+}
+};

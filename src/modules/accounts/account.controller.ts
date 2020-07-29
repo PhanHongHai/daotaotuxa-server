@@ -173,6 +173,21 @@ class AccountController extends BaseController {
 			next(error);
 		}
 	}
+	async loginStudent(req: any, res: any, next: any) {
+		try {
+			const { tag, password } = req.body;
+			const userData = await this.accountRepository.getAccountByOption({ tag });
+			if (!userData) {
+				throw new NotFoundException(this.messges.ACCOUNT_IS_NOT_FOUND);
+			}
+			if (bcrypt.compareSync(password, userData.password)) {
+				let token = jwt.sign({ role: userData.role, userID: userData._id }, process.env.SECRET_SIGN_TOKEN);
+				res.json({ token, role: userData.role });
+			} else throw new BadRequestException(this.messges.PASSWORD_IS_NOT_CORRECT);
+		} catch (error) {
+			next(error);
+		}
+	}
 	/**
 	 * auth password
 	 * @param req

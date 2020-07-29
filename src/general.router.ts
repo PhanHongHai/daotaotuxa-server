@@ -5,7 +5,10 @@ import ClassDetailController from './modules/classDetail/classDetail.controller'
 import { validatorBody, validatorParam } from './middlewares';
 import { authorize } from './middlewares/authorize';
 // validate schema
-import { LoginAccountValidatorSchema } from './modules/accounts/validatorSchemas/account.login.validatorSchemas';
+import {
+	LoginAccountValidatorSchema,
+	LoginAccountStudentValidatorSchema,
+} from './modules/accounts/validatorSchemas/account.login.validatorSchemas';
 import { IdMongoValidatorSchemas } from './common/validatorSchemas/IdMongo.validatorSchemas';
 import { UpdateAccountValidatorSchema } from './modules/accounts/validatorSchemas/account.update.validatorSchemas';
 import {
@@ -23,6 +26,7 @@ const classDetailController = new ClassDetailController();
 
 // login
 router.post('/login', validatorBody(LoginAccountValidatorSchema), accountController.login);
+router.post('/login-student', validatorBody(LoginAccountStudentValidatorSchema), accountController.loginStudent);
 
 // router.get('/detail-class',authorize(['student']),classDetailController.getInfoClassByStudentID);
 // get account data

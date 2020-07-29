@@ -173,7 +173,7 @@ class QuestionRepository {
 				},
 			},
 		]);
-		return reports
+		return reports && reports.length > 0
 			? reports[0]
 			: {
 					level1: 0,

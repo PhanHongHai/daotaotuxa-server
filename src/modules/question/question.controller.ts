@@ -68,6 +68,7 @@ class QuestionController extends BaseController {
 				optionLevel4,
 				option,
 			);
+
 			res.json(numberQuestion);
 		} catch (error) {
 			next(error);
