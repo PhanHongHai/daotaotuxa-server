@@ -5,13 +5,19 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import fs from 'fs';
 import morgan from 'morgan';
-import https from 'https';
+import socketio from 'socket.io';
+import http from 'http';
+
 import router from './src/router.root';
 import apiAuthenticator from './src/utils/apiAuthenticator';
+import initSockets from './src/socket';
 
 const app = express();
+
+// Init server with socket.io and express app
+let server = http.createServer(app);
+let io = socketio(server);
 
 app.use(express.json());
 app.use(cors());
@@ -45,25 +51,33 @@ app.use((error: any, req: any, res: any, next: any) => {
     message: error.name ? error.name : 'Unknown error',
     errors: [
       {
-        message: error.message ? error.message : 'Unknown error'
-      }
+        message: error.message ? error.message : 'Unknown error',
+      },
     ],
     status: error.status,
   });
 });
 
 // Mongodb connection
-mongoose.connect(process.env.MONGO_URL ? process.env.MONGO_URL : '', { useNewUrlParser: true, useUnifiedTopology: true  },)
-  .then(() => {
-    console.log(`Connected to database system.`);
-  });
-  
-process.env.NODE_ENV == 'development' ?
-  app.listen(process.env.PORT, () => {
-    console.log(`[HTTP] Server listening in port ${process.env.PORT}.`);
-  })
-  :
-  https.createServer({}, app)
-    .listen(process.env.PORT, () => {
-      console.log(`[HTTP] Server listening in port ${process.env.PORT}.`);
-    })
+mongoose.connect(process.env.MONGO_URL ? process.env.MONGO_URL : '', { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+  console.log(`Connected to database system.`);
+});
+
+// Init all sockets
+initSockets(io.sockets);
+
+server.listen(process.env.PORT, () => {
+  console.log(`[HTTP] Server listening in port ${process.env.PORT}.`);
+});
+
+
+
+// process.env.NODE_ENV == 'development' ?
+//   app.listen(process.env.PORT, () => {
+//     console.log(`[HTTP] Server listening in port ${process.env.PORT}.`);
+//   })
+//   :
+//   https.createServer({}, app)
+//     .listen(process.env.PORT, () => {
+//       console.log(`[HTTP] Server listening in port ${process.env.PORT}.`);
+//     })

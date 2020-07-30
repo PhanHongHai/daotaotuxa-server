@@ -1,5 +1,4 @@
 import moment from 'moment';
-import sha256 from 'sha256';
 import BaseController from '../../common/base/controller.base';
 import TrainingSectorRepository from './TrainingSector.repository';
 import SubjectRepository from './../subjects/subject.repository';
