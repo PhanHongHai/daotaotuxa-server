@@ -8,6 +8,10 @@ const ScheduleSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		type: {
+			type: Number,
+			required: true,
+		},
 		classes: [
 			{
 				type: Types.ObjectId,

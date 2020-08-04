@@ -64,7 +64,7 @@ mongoose.connect(process.env.MONGO_URL ? process.env.MONGO_URL : '', { useNewUrl
 });
 
 // Init all sockets
-initSockets(io.sockets);
+initSockets(io);
 
 server.listen(process.env.PORT, () => {
   console.log(`[HTTP] Server listening in port ${process.env.PORT}.`);

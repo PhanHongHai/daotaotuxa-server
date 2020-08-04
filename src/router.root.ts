@@ -17,6 +17,8 @@ import Question from './modules/question/question.router';
 import Exam from './modules/exam/exam.router';
 import Schedule from './modules/schedule/schedule.router';
 import SubjectProgress from './modules/subjectProgress/subjectProgress.route';
+import Point from './modules/point/point.router';
+
 var router = express.Router();
 
 router.use('/accounts', AccountRouter);
@@ -34,7 +36,7 @@ router.use('/questions', Question);
 router.use('/exams', Exam);
 router.use('/schedules', Schedule);
 router.use('/subject-progress', SubjectProgress);
-
+router.use('/points',Point);
 router.use(GeneralRouter);
 
 export default router;

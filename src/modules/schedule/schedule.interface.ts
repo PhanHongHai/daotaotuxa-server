@@ -3,6 +3,7 @@ import { Document, Types } from 'mongoose';
 export interface ISchedule extends Document {
 	_id: Types.ObjectId;
 	title: String;
+	type: String;
 	classes: [Types.ObjectId];
 	dayAt: Date;
 	timeAt: Date;

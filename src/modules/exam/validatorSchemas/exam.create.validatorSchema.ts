@@ -1,6 +1,6 @@
 import { ValidationSchema } from 'class-validator';
 import { getMessages } from '../../../common/messages/index';
-const messages = getMessages('proFile', 'vi');
+const messages = getMessages('exam', 'vi');
 export const CreateExamValidatorSchema: ValidationSchema = {
 	name: 'CreateExamValidatorSchema',
 	properties: {

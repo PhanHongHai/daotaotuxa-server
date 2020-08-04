@@ -103,7 +103,9 @@ class ExamRepository {
 		return await ExamModel.findOne({
 			...option,
 			isDeleted: false,
-		}).select(select);
+		})
+			.populate('questions')
+			.select(select);
 	}
 }
 export default ExamRepository;

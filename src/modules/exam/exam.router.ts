@@ -11,7 +11,7 @@ import { CreateExamAutoValidatorSchema } from './validatorSchemas/exam.createAut
 const examController = new ExamController();
 var router = express.Router();
 
-router.use(authorize(['admin', 'employment', 'teacher']));
+router.use(authorize(['admin', 'employment', 'teacher','student']));
 
 // get and search exams
 router.get('/', validatorQuery(GetListValidatorSchemas), examController.getAndSearch);

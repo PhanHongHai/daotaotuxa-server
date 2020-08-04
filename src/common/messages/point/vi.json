@@ -1,0 +1,11 @@
+{
+  "POINT_MIDDLE_IS_REQUIRED":"Điểm giữa kỳ không được để trống",
+  "SCHEDULE_ID_IS_REQUIRED":"Mã lịch thi không được để trống",
+  "EXAM_ID_IS_REQUIRED":"Mã đề thi không được để trống",
+  "SUBJECTT_ID_IS_REQUIRED":"Mã môn học không được để trống",
+  "ANSWER_ID_IS_REQUIRED":"Bài làm không được để trống",
+  "SCHEDULE_IS_NOT_EXIST":"Lịch thi không tồn tại",
+  "EXAM_IS_NOT_EXIST":"Đề thi không tồn tại",
+  "UPDATE_POINT_FAIL":"Cập nhật điểm thi thất bại",
+  "POINT_IS_NOT_EXIST":"Điểm thi không tồn tại"
+}

@@ -125,6 +125,7 @@ class ScheduleRepository {
 			.populate('subjectID')
 			.populate('trainingSectorID')
 			.populate('classes')
+			.populate('examID')
 			.select(select);
 	}
 
