@@ -18,6 +18,8 @@ import Exam from './modules/exam/exam.router';
 import Schedule from './modules/schedule/schedule.router';
 import SubjectProgress from './modules/subjectProgress/subjectProgress.route';
 import Point from './modules/point/point.router';
+import LogPoint from './modules/logSchedulePoint/logPoint.router';
+
 
 var router = express.Router();
 
@@ -37,6 +39,8 @@ router.use('/exams', Exam);
 router.use('/schedules', Schedule);
 router.use('/subject-progress', SubjectProgress);
 router.use('/points',Point);
+router.use('/logs-point',LogPoint);
+
 router.use(GeneralRouter);
 
 export default router;

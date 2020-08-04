@@ -4,6 +4,7 @@ import { getMessages } from '../../common/messages/index';
 import PointRepository from './point.repository';
 import ScheduleRepository from '../schedule/schedule.repository';
 import ExamRepository from '../exam/exam.repository';
+import LogPointRepository from '../logSchedulePoint/logPoint.repository';
 
 import { IUpdatePoint, ISubmitTask } from './point.interface';
 import { IQuestion } from '../question/question.interface';
@@ -12,6 +13,7 @@ class ExamController extends BaseController {
 	pointRepository: PointRepository;
 	scheduleRepository: ScheduleRepository;
 	examRepository: ExamRepository;
+	logPointRepository: LogPointRepository;
 
 	messges = getMessages('question', 'vi');
 	constructor() {
@@ -19,6 +21,7 @@ class ExamController extends BaseController {
 		this.pointRepository = new PointRepository();
 		this.scheduleRepository = new ScheduleRepository();
 		this.examRepository = new ExamRepository();
+		this.logPointRepository = new LogPointRepository();
 	}
 
 	/**
@@ -30,7 +33,8 @@ class ExamController extends BaseController {
 	async getDetailByStudent(req: any, res: any, next: any) {
 		try {
 			let { userID } = req;
-			let pointData = await this.pointRepository.getDetailPointByAccountID(userID);
+			let { limit, page } = req.query;
+			let pointData = await this.pointRepository.getDetailPointByAccountID(limit, page, userID);
 			res.json(pointData);
 		} catch (error) {
 			next(error);
@@ -44,8 +48,8 @@ class ExamController extends BaseController {
 	 */
 	async getDetailByAccountID(req: any, res: any, next: any) {
 		try {
-			let { ID } = req.params; // accountID
-			let pointData = await this.pointRepository.getDetailPointByAccountID(ID);
+			let { limit, page, studentID } = req.query;
+			let pointData = await this.pointRepository.getDetailPointByAccountID(limit, page, studentID);
 			res.json(pointData);
 		} catch (error) {
 			next(error);
@@ -76,8 +80,6 @@ class ExamController extends BaseController {
 				});
 			}
 			resultPoint = numberAnswerRight * existExam.point;
-			console.log(numberAnswerRight);
-			console.log(resultPoint);
 			let existPoint = await this.pointRepository.getByOption({ accountID: userID, subjectID: dataTask.subjectID });
 			if (existPoint) {
 				let updatePoint = false;
@@ -115,6 +117,13 @@ class ExamController extends BaseController {
 					});
 				}
 			}
+			await this.logPointRepository.create({
+				scheduleID:dataTask.scheduleID,
+				subjectID:dataTask.subjectID,
+				examID:dataTask.examID,
+				accountID:userID,
+				result:resultPoint
+			});
 			res.json({ answerRight: numberAnswerRight, total: resultPoint });
 		} catch (error) {
 			next(error);

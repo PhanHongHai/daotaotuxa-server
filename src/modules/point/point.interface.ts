@@ -3,6 +3,7 @@ export interface IPoint extends Document {
 	_id: Types.ObjectId;
 	subjectID: Types.ObjectId;
 	accountID: Types.ObjectId;
+	scheduleID: Types.ObjectId;
 	pointLast: number;
 	pointMiddle: number;
 	pointTotal: number;
@@ -12,6 +13,7 @@ export interface IPoint extends Document {
 export interface ICreatePoint extends Document {
 	subjectID: Types.ObjectId;
 	accountID: Types.ObjectId;
+	scheduleID: Types.ObjectId;
 	pointLast: number;
 	pointMiddle: number;
 	pointTotal: number;

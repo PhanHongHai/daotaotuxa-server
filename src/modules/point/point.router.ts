@@ -14,7 +14,7 @@ router.use(authorize(['admin', 'employment', 'teacher', 'student']));
 
 
 // get detail point by accountID
-router.get('/:ID', validatorParam(IdMongoValidatorSchemas), pointController.getDetailByAccountID);
+router.get('/', pointController.getDetailByAccountID);
 // get detail point by student
 router.get('/detail-point-by-student', pointController.getDetailByStudent);
 // caculator point

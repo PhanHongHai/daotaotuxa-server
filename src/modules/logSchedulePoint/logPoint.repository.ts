@@ -1,19 +1,19 @@
-import PointModel from './point.model';
-import { IPoint } from './point.interface';
+import PointModel from './logPoint.model';
+import { ILogPoint } from './logPoint.interface';
 import { Types } from 'mongoose';
-class PointRepository {
+class LogPointRepository {
 	constructor() {}
 
 	/**
-	 * create point
+	 * create log point
 	 * @param data
 	 */
-	async create(data: any): Promise<IPoint | any> {
+	async create(data: any): Promise<ILogPoint | any> {
 		return PointModel.create(data);
 	}
 
 	/**
-	 * update point
+	 * update log point
 	 * @param id point id
 	 * @param dataUpdate any
 	 */
@@ -53,12 +53,7 @@ class PointRepository {
 	 * get exam by id
 	 * @param ID
 	 */
-	async getDetailPointByAccountID(
-		limit: Number = 10,
-		page: Number = 1,
-		ID: Types.ObjectId,
-		select: String = '',
-	) {
+	async getDetailPointByAccountID(limit: Number = 10, page: Number = 1, ID: Types.ObjectId, select: String = '') {
 		return PointModel.paginate(
 			{
 				isDeleted: false,
@@ -68,6 +63,48 @@ class PointRepository {
 				populate: [
 					{
 						path: 'subjectID',
+					},
+					{
+						path: 'scheduleID',
+					},
+				],
+				sort: { createdAt: -1 },
+				limit: Number(limit),
+				page: Number(page),
+				select,
+			},
+		);
+	}
+
+	/**
+	 * get exam by id
+	 * @param ID
+	 */
+	async getLogsByTeacher(
+		limit: Number = 10,
+		page: Number = 1,
+		scheduleID: Types.ObjectId,
+		arrStudent: string[],
+		select: String = '',
+	) {
+		return PointModel.paginate(
+			{
+				isDeleted: false,
+				scheduleID,
+				accountID: {
+					$in: arrStudent,
+				},
+			},
+			{
+				populate: [
+					{
+						path: 'subjectID',
+					},
+					{
+						path: 'scheduleID',
+					},
+					{
+						path: 'accountID',
 					},
 				],
 				sort: { createdAt: -1 },
@@ -83,11 +120,11 @@ class PointRepository {
 	 * @param option object
 	 * @param select string
 	 */
-	async getByOption(option: object, select: string = ''): Promise<IPoint | any> {
+	async getByOption(option: object, select: string = ''): Promise<ILogPoint | any> {
 		return await PointModel.findOne({
 			...option,
 			isDeleted: false,
 		}).select(select);
 	}
 }
-export default PointRepository;
+export default LogPointRepository;

@@ -1,20 +1,10 @@
 import * as mongoose from 'mongoose';
 import { Schema, Types } from 'mongoose';
-import { IPoint } from './point.interface';
+import { ILogPoint } from './logPoint.interface';
 import mongoosePaginate from 'mongoose-paginate';
-const PointSchema = new Schema(
+const LogPointSchemas = new Schema(
 	{
-		pointMiddle: {
-			type: Number,
-			required: true,
-			default: 0,
-		},
-		pointLast: {
-			type: Number,
-			required: true,
-			default: 0,
-		},
-		pointTotal: {
+		result: {
 			type: Number,
 			required: true,
 			default: 0,
@@ -45,6 +35,6 @@ const PointSchema = new Schema(
 	},
 );
 
-PointSchema.plugin(mongoosePaginate);
-const PointModel = mongoose.model<IPoint>('points', PointSchema);
-export default PointModel;
+LogPointSchemas.plugin(mongoosePaginate);
+const LogPointModel = mongoose.model<ILogPoint>('logPoints', LogPointSchemas);
+export default LogPointModel;
