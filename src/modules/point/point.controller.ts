@@ -87,12 +87,12 @@ class ExamController extends BaseController {
 				if (existSchedule.type == 1) {
 					updatePoint = await this.pointRepository.update(existPoint._id, {
 						pointMiddle: resultPoint,
-						pointTotal: (resultPoint * 30) / 100,
+						pointTotal: (resultPoint * 30) / 100 + (existPoint.pointLast * 70) / 100,
 					});
-				} else {
+				} else if (existSchedule.type == 2) {
 					updatePoint = await this.pointRepository.update(existPoint._id, {
 						pointLast: resultPoint,
-						pointTotal: (resultPoint * 70) / 100,
+						pointTotal: (existPoint.pointMiddle * 30) / 100 + (resultPoint * 70) / 100,
 					});
 				}
 				if (!updatePoint) throw new InternalServerErrorException(this.messges.UPDATE_POINT_FAIL);
@@ -118,11 +118,11 @@ class ExamController extends BaseController {
 				}
 			}
 			await this.logPointRepository.create({
-				scheduleID:dataTask.scheduleID,
-				subjectID:dataTask.subjectID,
-				examID:dataTask.examID,
-				accountID:userID,
-				result:resultPoint
+				scheduleID: dataTask.scheduleID,
+				subjectID: dataTask.subjectID,
+				examID: dataTask.examID,
+				accountID: userID,
+				result: resultPoint,
 			});
 			res.json({ answerRight: numberAnswerRight, total: resultPoint });
 		} catch (error) {
