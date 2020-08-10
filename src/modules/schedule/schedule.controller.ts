@@ -125,8 +125,7 @@ class scheduleController extends BaseController {
 					},
 				});
 				res.json(schedulesData);
-			}
-			else{
+			} else {
 				let schedulesData = await this.scheduleRepository.getAndSearchScheduleByOption(limit, page, keyword, {
 					classes: {
 						$elemMatch: {
@@ -188,13 +187,24 @@ class scheduleController extends BaseController {
 				if (existTitle) throw new BadRequestException(this.messges.TITLE_IS_EXIST);
 			}
 			if (scheduleData && scheduleData.dayAt) {
-				let checkClass = await this.scheduleRepository.getManyByOption({
-					classes: {
-						$elemMatch: {
-							$in: scheduleData.classes,
+				let checkClass = [];
+				if (!scheduleData.classes) {
+					checkClass = await this.scheduleRepository.getManyByOption({
+						classes: {
+							$elemMatch: {
+								$in: existSchedule.classes,
+							},
 						},
-					},
-				});
+					});
+				} else {
+					checkClass = await this.scheduleRepository.getManyByOption({
+						classes: {
+							$elemMatch: {
+								$in: scheduleData.classes,
+							},
+						},
+					});
+				}
 				if (checkClass.length > 0) {
 					if (scheduleData.timeAt) {
 						let dataExist = await checkTimeSchedule(checkClass, scheduleData);

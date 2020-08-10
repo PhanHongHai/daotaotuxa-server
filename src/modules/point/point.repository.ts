@@ -50,15 +50,74 @@ class PointRepository {
 	}
 
 	/**
+	 * get points of subject by class
+	 * @param ID
+	 */
+	async getPointsOfClassByTeacher(limit: Number = 10, page: Number = 1, option: object = {}, select: String = '') {
+		return PointModel.paginate(
+			{
+				isDeleted: false,
+				...option,
+			},
+			{
+				populate: [
+					{
+						path: 'accountID',
+					},
+				],
+				sort: { createdAt: -1 },
+				limit: Number(limit),
+				page: Number(page),
+				select,
+			},
+		);
+	}
+
+	/**
+	 * get points by class
+	 * @param ID
+	 */
+	async getPointAllOfClass(limit: Number = 10, skip: Number = 0, accountArr: Types.ObjectId[] = []) {
+		return PointModel.aggregate([
+			{
+				$match: {
+					isDeleted: false,
+					accountID: {
+						$in: accountArr,
+					},
+				},
+			},
+			{ $skip: skip },
+			{ $limit: limit },
+			{
+				$lookup: {
+					from: 'accounts',
+					localField: 'accountID',
+					foreignField: '_id',
+					as: 'accounts',
+				},
+			},
+			{
+				$lookup: {
+					from: 'subjects',
+					localField: 'subjectID',
+					foreignField: '_id',
+					as: 'subject',
+				},
+			},
+			{
+				$replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ['$accounts', 0] }, '$$ROOT'] } },
+			},
+			{ $project: { accounts: 0 } },
+		
+		]);
+	}
+
+	/**
 	 * get exam by id
 	 * @param ID
 	 */
-	async getDetailPointByAccountID(
-		limit: Number = 10,
-		page: Number = 1,
-		ID: Types.ObjectId,
-		select: String = '',
-	) {
+	async getDetailPointByAccountID(limit: Number = 10, page: Number = 1, ID: Types.ObjectId, select: String = '') {
 		return PointModel.paginate(
 			{
 				isDeleted: false,
@@ -85,6 +144,18 @@ class PointRepository {
 	 */
 	async getByOption(option: object, select: string = ''): Promise<IPoint | any> {
 		return await PointModel.findOne({
+			...option,
+			isDeleted: false,
+		}).select(select);
+	}
+
+	/**
+	 * find by option
+	 * @param option object
+	 * @param select string
+	 */
+	async findByOption(option: object, select: string = ''): Promise<IPoint | any> {
+		return await PointModel.find({
 			...option,
 			isDeleted: false,
 		}).select(select);

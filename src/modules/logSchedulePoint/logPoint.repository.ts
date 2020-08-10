@@ -84,16 +84,14 @@ class LogPointRepository {
 		limit: Number = 10,
 		page: Number = 1,
 		scheduleID: Types.ObjectId,
-		arrStudent: string[],
+		classID: Types.ObjectId,
 		select: String = '',
 	) {
 		return PointModel.paginate(
 			{
 				isDeleted: false,
 				scheduleID,
-				accountID: {
-					$in: arrStudent,
-				},
+				classID,
 			},
 			{
 				populate: [

@@ -1,5 +1,6 @@
 {
   "POINT_MIDDLE_IS_REQUIRED":"Điểm giữa kỳ không được để trống",
+  "CLASS_ID_IS_REQUIRED":"Mã lớp không được để trống",
   "SCHEDULE_ID_IS_REQUIRED":"Mã lịch thi không được để trống",
   "EXAM_ID_IS_REQUIRED":"Mã đề thi không được để trống",
   "SUBJECTT_ID_IS_REQUIRED":"Mã môn học không được để trống",

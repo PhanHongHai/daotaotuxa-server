@@ -20,6 +20,7 @@ router.get('/', validatorQuery(GetListValidatorSchemas), classDetailController.g
 router.get('/info-teacher/:ID',validatorParam(IdMongoValidatorSchemas),classDetailController.getInfoTeacherOfClass);
 
 router.get('/students',validatorQuery(GetListValidatorSchemas),classDetailController.getStudentsOfClassByTeacher);
+router.get('/export-students-class/:ID',classDetailController.exportStudentListOfClassByTeacher);
 // add student to classd 
 router.post('/', validatorBody(ClassDetailValidatorSchema), classDetailController.addAccountToClassDetail);
 

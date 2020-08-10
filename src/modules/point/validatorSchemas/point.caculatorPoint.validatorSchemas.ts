@@ -4,6 +4,12 @@ const messages = getMessages('point', 'vi');
 export const CaculatorPointValidatorSchema: ValidationSchema = {
 	name: 'CaculatorPointValidatorSchema',
 	properties: {
+		classID: [
+			{
+				type: 'isDefined',
+				message: messages.CLASS_ID_IS_REQUIRED,
+			},
+		],
 		scheduleID: [
 			{
 				type: 'isDefined',

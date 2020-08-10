@@ -23,6 +23,15 @@ class AccountRepository {
 			isDeleted: false,
 		});
 	}
+	/**
+	 * get count by option
+	 * @param option oject
+	 */
+	async getCountAll(option: object): Promise<number> {
+		return await AccountModel.count({
+			...option,
+		});
+	}
 
 	/**
 	 * get account by id

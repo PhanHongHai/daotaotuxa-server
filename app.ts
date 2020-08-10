@@ -28,6 +28,7 @@ const clientDir = path.resolve(__dirname, 'public');
 
 // Static router
 app.use('/uploads', express.static(process.env.NODE_ENV == 'production' ? clientDir : './src/uploads'));
+app.use('/uploads', express.static(process.env.NODE_ENV == 'production' ? clientDir : './src/resouces'));
 
 // Router
 if (process.env.NODE_ENV == 'production') {

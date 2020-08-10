@@ -17,6 +17,10 @@ router.use(authorize(['admin', 'employment', 'teacher', 'student']));
 router.get('/', pointController.getDetailByAccountID);
 // get detail point by student
 router.get('/detail-point-by-student', pointController.getDetailByStudent);
+// get points of class by subjectID
+router.get('/get-points-by-subject',pointController.getPointSubjectOfClassByTeacher);
+// get point all of class by teacher
+router.get('/get-point-all-by-class',pointController.getPointAllOfClassByTeacher);
 // caculator point
 router.post('/caculator-point',validatorBody(CaculatorPointValidatorSchema),pointController.caculatorPoint);
 // update point

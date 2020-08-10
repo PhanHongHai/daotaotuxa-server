@@ -214,7 +214,7 @@ class ClassDetailRepository {
 		return ClassDetailModel.find({
 			...option,
 			isDeleted: false,
-		});
+		}).populate('accountID');
 	}
 	//get classDetail by ClassID
 	async getByClassID(targetId: Types.ObjectId, select: string = ''): Promise<IClassDetail | null> {

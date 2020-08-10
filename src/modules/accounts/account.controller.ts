@@ -393,9 +393,10 @@ class AccountController extends BaseController {
 	 */
 	async createAccountStudent(req: any, res: any, next: any) {
 		try {
+			console.log(req);
 			const dataBody: ICreateStudentAccount = req.body;
 			const { userID } = req;
-			let countAccountStudent = await this.accountRepository.getCount({ role: 'student' });
+			let countAccountStudent = await this.accountRepository.getCountAll({ role: 'student' });
 			let userData = await this.accountRepository.getById(userID, {}, '-password');
 			if (!userData) throw new UnauthorizedException(this.messges.CANNOT_ACCESS);
 			if (userData && userData.role === 'partner' && dataBody.role === 'student') {

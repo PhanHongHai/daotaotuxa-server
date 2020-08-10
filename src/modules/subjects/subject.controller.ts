@@ -40,7 +40,6 @@ class SubjectController extends BaseController {
 		try {
 			let { limit, page, keyword } = req.query;
 			let subjects = await this.subjectRepository.getAndSearch(keyword, limit, page);
-			console.log(subjects);
 			res.json(subjects);
 		} catch (error) {
 			next(error);

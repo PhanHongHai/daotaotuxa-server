@@ -9,6 +9,11 @@ const LogPointSchemas = new Schema(
 			required: true,
 			default: 0,
 		},
+		classID: {
+			type: Types.ObjectId,
+			ref: 'classes',
+			required: true,
+		},
 		subjectID: {
 			type: Types.ObjectId,
 			ref: 'subjects',

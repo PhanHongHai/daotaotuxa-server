@@ -41,12 +41,12 @@ class LogPointController extends BaseController {
 	async logsScheduleByTeacher(req: any, res: any, next: any) {
 		try {
 			let { limit, page, classID, scheduleID } = req.query;
-			let classStudent = await this.classDetailRepository.findByOption({ classID });
-			let arrStudentID: string[] = [];
-			if (classStudent.length > 0) {
-				classStudent.forEach((ele: any) => arrStudentID.push(ele._id));
-			}
-			let dataLog = await this.logPointRepository.getLogsByTeacher(limit, page, scheduleID, arrStudentID);
+			// let classStudent = await this.classDetailRepository.findByOption({ classID });
+			// let arrStudentID: string[] = [];
+			// if (classStudent.length > 0) {
+			// 	classStudent.forEach((ele: any) => arrStudentID.push(ele._id));
+			// }
+			let dataLog = await this.logPointRepository.getLogsByTeacher(limit, page, scheduleID, classID);
 			res.json(dataLog);
 		} catch (error) {
 			next(error);

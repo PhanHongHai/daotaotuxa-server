@@ -29,11 +29,6 @@ const PointSchema = new Schema(
 			ref: 'accounts',
 			required: true,
 		},
-		scheduleID: {
-			type: Types.ObjectId,
-			ref: 'schedules',
-			required: true,
-		},
 		isDeleted: {
 			type: Boolean,
 			default: false,

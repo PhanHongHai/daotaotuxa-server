@@ -5,15 +5,18 @@ import PointRepository from './point.repository';
 import ScheduleRepository from '../schedule/schedule.repository';
 import ExamRepository from '../exam/exam.repository';
 import LogPointRepository from '../logSchedulePoint/logPoint.repository';
+import ClassDetailRepository from '../classDetail/classDetail.repository';
 
 import { IUpdatePoint, ISubmitTask } from './point.interface';
 import { IQuestion } from '../question/question.interface';
+import { Types } from 'mongoose';
 
 class ExamController extends BaseController {
 	pointRepository: PointRepository;
 	scheduleRepository: ScheduleRepository;
 	examRepository: ExamRepository;
 	logPointRepository: LogPointRepository;
+	classDetailRepository: ClassDetailRepository;
 
 	messges = getMessages('question', 'vi');
 	constructor() {
@@ -22,8 +25,61 @@ class ExamController extends BaseController {
 		this.scheduleRepository = new ScheduleRepository();
 		this.examRepository = new ExamRepository();
 		this.logPointRepository = new LogPointRepository();
+		this.classDetailRepository = new ClassDetailRepository();
 	}
 
+	/**
+	 * get point subject of class by teacher
+	 * @param req
+	 * @param res
+	 * @param next
+	 */
+	async getPointSubjectOfClassByTeacher(req: any, res: any, next: any) {
+		try {
+			let { limit, page, classID, subjectID } = req.query;
+			let classStudent = await this.classDetailRepository.findByOption({ classID });
+			let arrStudentID: Types.ObjectId[] = [];
+			if (classStudent.length > 0) {
+				classStudent.forEach((ele: any) => arrStudentID.push(ele.accountID._id));
+			}
+			let pointsData = await this.pointRepository.getPointsOfClassByTeacher(limit, page, {
+				$and: [
+					{
+						subjectID,
+					},
+					{
+						accountID: {
+							$in: arrStudentID,
+						},
+					},
+				],
+			});
+			res.json(pointsData);
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * get point all of class by teacher
+	 * @param req
+	 * @param res
+	 * @param next
+	 */
+	async getPointAllOfClassByTeacher(req: any, res: any, next: any) {
+		try {
+			let { limit, page, classID } = req.query;
+			const skip = Number(page) * Number(limit) - Number(limit);
+			let classStudent = await this.classDetailRepository.findByOption({ classID });
+			let arrStudentID: Types.ObjectId[] = [];
+			if (classStudent.length > 0) {
+				classStudent.forEach((ele: any) => arrStudentID.push(ele.accountID._id));
+			}
+			let pointsData=await this.pointRepository.getPointAllOfClass(Number(limit),skip,arrStudentID);
+			res.json(pointsData);
+		} catch (error) {
+			next(error);
+		}
+	}
 	/**
 	 * get detail point by student
 	 * @param req
@@ -94,7 +150,7 @@ class ExamController extends BaseController {
 						pointLast: resultPoint,
 						pointTotal: (existPoint.pointMiddle * 30) / 100 + (resultPoint * 70) / 100,
 					});
-				}
+				} else updatePoint = true;
 				if (!updatePoint) throw new InternalServerErrorException(this.messges.UPDATE_POINT_FAIL);
 			} else {
 				let createData = {
@@ -118,6 +174,7 @@ class ExamController extends BaseController {
 				}
 			}
 			await this.logPointRepository.create({
+				classID: dataTask.classID,
 				scheduleID: dataTask.scheduleID,
 				subjectID: dataTask.subjectID,
 				examID: dataTask.examID,
@@ -142,7 +199,7 @@ class ExamController extends BaseController {
 			const pointData: IUpdatePoint = req.body;
 			let existPoint = await this.pointRepository.getByOption({ _id: ID });
 			if (!existPoint) throw new BadRequestException(this.messges.POINT_IS_NOT_EXIST);
-			let pointTotal = Math.floor((pointData.pointMiddle * 30) / 100 + (existPoint.pointLast * 70) / 100);
+			let pointTotal = ((pointData.pointMiddle * 30) / 100 + (existPoint.pointLast * 70) / 100);
 			let update = await this.pointRepository.update(ID, {
 				...pointData,
 				pointTotal,
