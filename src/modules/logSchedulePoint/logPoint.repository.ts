@@ -77,6 +77,23 @@ class LogPointRepository {
 	}
 
 	/**
+	 * get logs schedule by scheduleID classID
+	 * @param ID
+	 */
+	async getLogsScheduleOfClassByID(scheduleID: Types.ObjectId, classID: Types.ObjectId) {
+		return PointModel.find({
+			isDeleted: false,
+			scheduleID,
+			classID,
+		})
+			.populate('classID')
+			.populate('subjectID')
+			.populate('scheduleID')
+			.populate('accountID')
+			.sort({ createdAt: -1 });
+	}
+
+	/**
 	 * get exam by id
 	 * @param ID
 	 */

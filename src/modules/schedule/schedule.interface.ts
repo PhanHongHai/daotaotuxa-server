@@ -8,9 +8,9 @@ export interface ISchedule extends Document {
 	dayAt: Date;
 	timeAt: Date;
 	timeRange: number;
-	subjectID: String;
-	trainingSectorID: String;
-	examID: String;
+	subjectID: Types.ObjectId;
+	trainingSectorID: Types.ObjectId;
+	examID: Types.ObjectId;
 	isDeleted: Boolean;
 	createdAt: Date;
 }
@@ -20,9 +20,9 @@ export interface ICreateSchedule extends Document {
 	dayAt: Date;
 	timeAt: Date;
 	timeRange: number;
-	subjectID: String;
-	trainingSectorID: String;
-	examID: String;
+	subjectID: Types.ObjectId;
+	trainingSectorID: Types.ObjectId;
+	examID: Types.ObjectId;
 }
 export interface IUpdateSchedule extends Document {
 	title: String;
@@ -30,5 +30,5 @@ export interface IUpdateSchedule extends Document {
 	dayAt: Date;
 	timeAt: Date;
 	timeRange: number;
-	examID: String;
+	examID: Types.ObjectId;
 }

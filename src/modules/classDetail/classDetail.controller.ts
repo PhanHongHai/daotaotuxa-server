@@ -10,7 +10,7 @@ import { BadRequestException, NotFoundException } from '../../common/error';
 
 // interfaces
 
-import { ICreateClassDetail, IClassDetail } from './classDetail.interface';
+import { ICreateClassDetail,  } from './classDetail.interface';
 import { getMessages } from '../../common/messages/index';
 import moment from 'moment';
 
@@ -47,7 +47,7 @@ class ClassDetailController extends BaseController {
 			let { ID } = req.params;
 			let classDetail = await this.ClassRepository.getById(ID);
 			if (!classDetail) throw new BadRequestException(this.messges.CLASS_IS_NOT_EXIST);
-			let students = await this.ClassDetailRepository.findByOption({ classID: ID });
+			let students = await this.ClassDetailRepository.getStudentsByOption({ classID: ID });
 			let dataStudentsArr: object[] = [];
 			students.forEach((ele: any, index: number) =>
 				dataStudentsArr.push({

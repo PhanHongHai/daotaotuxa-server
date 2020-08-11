@@ -99,7 +99,7 @@ class ClassRepository {
 		}).select(select);
 	}
 
-	async getById(targetId: Types.ObjectId, select: string = ''): Promise<IClassInfo | IClass | null> {
+	async getById(targetId: Types.ObjectId, select: string = ''): Promise<any | null> {
 		return ClassModel.findOne({
 			_id: targetId,
 			isDeleted: false,

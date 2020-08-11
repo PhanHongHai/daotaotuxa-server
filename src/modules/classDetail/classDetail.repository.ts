@@ -216,6 +216,16 @@ class ClassDetailRepository {
 			isDeleted: false,
 		}).populate('accountID');
 	}
+	//get student classDetail by ClassID
+	async getStudentsByOption(option: object): Promise<IClassDetail[]> {
+		return ClassDetailModel.find({
+			...option,
+			isDeleted: false,
+		}).populate({
+			path: 'accountID',
+			match: { role: { $eq: 'student' } },
+		});
+	}
 	//get classDetail by ClassID
 	async getByClassID(targetId: Types.ObjectId, select: string = ''): Promise<IClassDetail | null> {
 		return ClassDetailModel.findOne({

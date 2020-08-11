@@ -117,7 +117,7 @@ class ScheduleRepository {
 	 * get schedule by id
 	 * @param ID
 	 */
-	async getDetailscheduleByID(ID: Types.ObjectId, select: String = '') {
+	async getDetailscheduleByID(ID: Types.ObjectId, select: String = ''): Promise<any> {
 		return ScheduleModel.findOne({
 			isDeleted: false,
 			_id: ID,
