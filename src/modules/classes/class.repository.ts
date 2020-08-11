@@ -1,5 +1,5 @@
 import ClassModel from './class.model';
-import { IClass, ICreateClass, IGetReportTotalOptions } from './class.interface';
+import { IClass, IClassInfo, ICreateClass, IGetReportTotalOptions } from './class.interface';
 import { Types } from 'mongoose';
 import moment from 'moment';
 
@@ -99,7 +99,7 @@ class ClassRepository {
 		}).select(select);
 	}
 
-	async getById(targetId: Types.ObjectId, select: string = ''): Promise<IClass | null> {
+	async getById(targetId: Types.ObjectId, select: string = ''): Promise<IClassInfo | IClass | null> {
 		return ClassModel.findOne({
 			_id: targetId,
 			isDeleted: false,

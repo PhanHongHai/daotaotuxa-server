@@ -1,6 +1,4 @@
 import excel from 'exceljs';
-import fs from 'fs';
-import path from 'path';
 
 import BaseController from '../../common/base/controller.base';
 
@@ -47,6 +45,8 @@ class ClassDetailController extends BaseController {
 	async exportStudentListOfClassByTeacher(req: any, res: any, next: any) {
 		try {
 			let { ID } = req.params;
+			let classDetail = await this.ClassRepository.getById(ID);
+			if (!classDetail) throw new BadRequestException(this.messges.CLASS_IS_NOT_EXIST);
 			let students = await this.ClassDetailRepository.findByOption({ classID: ID });
 			let dataStudentsArr: object[] = [];
 			students.forEach((ele: any, index: number) =>
@@ -63,12 +63,52 @@ class ClassDetailController extends BaseController {
 				}),
 			);
 			let workbook = new excel.Workbook();
+
 			let worksheet = workbook.addWorksheet('Danh sách');
-			worksheet.getRow(1).font = { bold: true };
+			const row = worksheet.getRow(1);
+			row.hidden = true;
+			worksheet.mergeCells('D4:F4');
+			worksheet.mergeCells('G2:I2');
+		//	worksheet.mergeCells('G2','H2','I2');
+			worksheet.mergeCells('G3:I3');
+			worksheet.getCell('C6').value = 'Mã lớp học :'+ classDetail.tag;
+			worksheet.getCell('C7').value = 'Tên lớp học :' + classDetail.name;
+			worksheet.getCell('G2').value = 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM';
+			worksheet.getCell('G2').font = {
+				family: 4,
+				size: 17,
+				bold: true,
+			};
+			worksheet.getCell('G2').alignment = {  horizontal: 'center' };
+			worksheet.getCell('G3').value = 'Độc lập - Tự do - Hạnh phúc';
+			worksheet.getCell('G3').font = {
+				family: 4,
+				size: 14,
+				underline: true,
+			};
+			worksheet.getCell('G3').alignment = { vertical: 'middle', horizontal: 'center' };
+			worksheet.getCell('D4').value = 'DANH SÁCH HỌC VIÊN';
+			worksheet.getCell('D4').alignment = { vertical: 'middle', horizontal: 'center' };
+			worksheet.getCell('D4').font = {
+				family: 4,
+				size: 17,
+				bold: true,
+			};
+			worksheet.getRow(9).values = [
+				'STT',
+				'MSHV',
+				'Họ Tên',
+				'Email',
+				'Giới Tính',
+				'Ngày Sinh',
+				'CMND',
+				'Số Điện Thoại',
+				'Địa Chỉ',
+			];
 			worksheet.columns = [
-				{ header: 'STT', key: 'stt', width: 10, outlineLevel: 1 },
-				{ header: 'MSHV', key: 'tag', width: 10, outlineLevel: 10 },
-				{ header: 'Họ Tên', key: 'name', width: 30, outlineLevel: 1 },
+				{ header: 'STT', key: 'stt', width: 10,  },
+				{ header: 'MSHV', key: 'tag', width: 10, },
+				{ header: 'Họ Tên', key: 'name', width: 30, },
 				{ header: 'Email', key: 'email', width: 30 },
 				{ header: 'Giới Tính', key: 'sex', width: 15 },
 				{ header: 'Ngày Sinh', key: 'birthDay', width: 20 },
@@ -80,35 +120,39 @@ class ClassDetailController extends BaseController {
 			// Add Array Rows
 			worksheet.addRows(dataStudentsArr);
 			worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-				worksheet.getCell(`A${rowNumber}`).border = {
-					top: { style: 'thin' },
-					left: { style: 'thin' },
-					bottom: { style: 'thin' },
-					right: { style: 'thin' },
-				};
-
-				const insideColumns = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-				insideColumns.forEach(v => {
-					worksheet.getCell(`${v}${rowNumber}`).border = {
+				if (rowNumber >= 9) {
+					worksheet.getCell(`A${rowNumber}`).border = {
 						top: { style: 'thin' },
-						bottom: { style: 'thin' },
 						left: { style: 'thin' },
+						bottom: { style: 'thin' },
 						right: { style: 'thin' },
 					};
-				});
+					worksheet.getCell(`A${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 
-				worksheet.getCell(`F${rowNumber}`).border = {
-					top: { style: 'thin' },
-					left: { style: 'thin' },
-					bottom: { style: 'thin' },
-					right: { style: 'thin' },
-				};
+					const insideColumns = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+					insideColumns.forEach(v => {
+						worksheet.getCell(`${v}${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
+						worksheet.getCell(`${v}${rowNumber}`).border = {
+							top: { style: 'thin' },
+							bottom: { style: 'thin' },
+							left: { style: 'thin' },
+							right: { style: 'thin' },
+						};
+					});
+
+					worksheet.getCell(`F${rowNumber}`).border = {
+						top: { style: 'thin' },
+						left: { style: 'thin' },
+						bottom: { style: 'thin' },
+						right: { style: 'thin' },
+					};
+				}
 			});
 			res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-			res.setHeader('Content-Disposition', 'attachment; filename=' + 'test.xls');
+			res.setHeader('Content-Disposition', 'attachment; filename=' + 'test.xlsx');
 
 			workbook.xlsx
-				.writeBuffer()
+				.write(res)
 				.then(function() {
 					res.end();
 					console.log('File write done........');
