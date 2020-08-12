@@ -3,6 +3,8 @@ import moment from 'moment';
 
 import countries from '../../utils/country';
 import trainingTypes from '../../utils/trainingType';
+import convertNumberToText from '../../utils/convertNumberToText';
+
 import { exportExcelServiceCustomRow } from '../../utils/exportExcel';
 
 import BaseController from '../../common/base/controller.base';
@@ -30,7 +32,7 @@ class LogPointController extends BaseController {
 	scheduleRepository: ScheduleRepository;
 	classRepository: ClassRepository;
 
-	messges = getMessages('question', 'vi');
+	messges = getMessages('logPoint', 'vi');
 	constructor() {
 		super();
 
@@ -65,6 +67,7 @@ class LogPointController extends BaseController {
 						sex: ele.accountID.sex == 1 ? 'Nam' : ' Nữ',
 						country: getNameCountry(countries, ele.accountID.country),
 						result: ele.result,
+						resultText: convertNumberToText(ele.result),
 					}),
 				);
 			}
@@ -98,7 +101,12 @@ class LogPointController extends BaseController {
 				size: 17,
 				bold: true,
 			};
-			worksheet.getRow(10).values = ['STT', 'MSHV', 'Họ Tên', 'Giới Tính', 'Ngày Sinh', 'Quê Quán', 'Bằng Chữ','Bằng Số'];
+			let rowHeader = ['A','B','C','D','E','F'];
+			rowHeader.forEach(ele =>{
+				worksheet.mergeCells(`${ele}13:${ele}14`);
+				worksheet.getCell(`${ele}13`).alignment = { vertical: 'middle', horizontal: 'center' };
+			});
+			worksheet.getRow(13).values = ['STT', 'MSHV', 'Họ Tên', 'Giới Tính', 'Ngày Sinh', 'Quê Quán', 'Bằng Chữ','Bằng Số'];
 			worksheet.columns = [
 				{ header: 'STT', key: 'stt', width: 10 },
 				{ header: 'MSHV', key: 'tag', width: 10 },
@@ -112,19 +120,26 @@ class LogPointController extends BaseController {
 			// Add Array Rows
 			worksheet.addRows(arrLogData);
 			worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-				console.log(row.values);
 				const insideColumns = ['B', 'C', 'D', 'E', 'F'];
-				if (rowNumber == 10) {
-					worksheet.mergeCells(`A${rowNumber}:A${rowNumber + 1}`);
+				if (rowNumber == 13) {
+				//	worksheet.mergeCells(`A${rowNumber}:A${rowNumber - 1}`);
 					worksheet.getCell(`A${rowNumber}`).border = {
 						top: { style: 'thin' },
 						left: { style: 'thin' },
 						bottom: { style: 'thin' },
 						right: { style: 'thin' },
 					};
+					worksheet.getCell(`A${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 					insideColumns.forEach(ele => {
-						worksheet.mergeCells(`${ele}${rowNumber}:${ele}${rowNumber + 1}`);
+					//	worksheet.mergeCells(`${ele}${rowNumber}:${ele}${rowNumber - 1}`);
+					worksheet.getCell(`${ele}${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 						worksheet.getCell(`${ele}${rowNumber}`).border = {
+							top: { style: 'thin' },
+							left: { style: 'thin' },
+							bottom: { style: 'thin' },
+							right: { style: 'thin' },
+						};
+						worksheet.getCell(`${ele}${rowNumber+1}`).border = {
 							top: { style: 'thin' },
 							left: { style: 'thin' },
 							bottom: { style: 'thin' },
@@ -139,14 +154,26 @@ class LogPointController extends BaseController {
 						bottom: { style: 'thin' },
 						right: { style: 'thin' },
 					};
-					worksheet.getCell(`G${rowNumber}:H${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
+					worksheet.getCell(`G${rowNumber+1}`).border = {
+						top: { style: 'thin' },
+						left: { style: 'thin' },
+						bottom: { style: 'thin' },
+						right: { style: 'thin' },
+					};
+					worksheet.getCell(`H${rowNumber+1}`).border = {
+						top: { style: 'thin' },
+						left: { style: 'thin' },
+						bottom: { style: 'thin' },
+						right: { style: 'thin' },
+					};
+					worksheet.getCell(`G${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 					worksheet.getCell(`G${rowNumber}`).value = 'Điểm Thi';
-					worksheet.getCell(`G${rowNumber + 1}`).value = 'Bằng Số';
-					worksheet.getCell(`H${rowNumber + 1}`).value = 'Bằng Chữ';
+					worksheet.getCell(`G${rowNumber + 1}`).value = 'Bằng Chữ';
+					worksheet.getCell(`H${rowNumber + 1}`).value = 'Bằng Số';
 					worksheet.getCell(`G${rowNumber + 1}`).alignment = { vertical: 'middle', horizontal: 'center' };
 					worksheet.getCell(`H${rowNumber + 1}`).alignment = { vertical: 'middle', horizontal: 'center' };
 				}
-				if (rowNumber >= 12) {
+				if (rowNumber > 14) {
 					worksheet.getCell(`A${rowNumber}`).border = {
 						top: { style: 'thin' },
 						left: { style: 'thin' },
@@ -165,6 +192,8 @@ class LogPointController extends BaseController {
 						bottom: { style: 'thin' },
 						right: { style: 'thin' },
 					};
+					worksheet.getCell(`G${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
+					worksheet.getCell(`H${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 					worksheet.getCell(`A${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 					insideColumns.forEach(v => {
 						worksheet.getCell(`${v}${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };

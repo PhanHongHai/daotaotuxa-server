@@ -53,6 +53,18 @@ class PointRepository {
 	 * get points of subject by class
 	 * @param ID
 	 */
+	async getPointAllOfClassBySubjectIDAndClassID(option: object = {}) {
+		return PointModel.find({
+			isDeleted: false,
+			...option,
+		})
+			.populate('accountID')
+			.sort({ createdAt: -1 });
+	}
+	/**
+	 * get points of subject by class
+	 * @param ID
+	 */
 	async getPointsOfClassByTeacher(limit: Number = 10, page: Number = 1, option: object = {}, select: String = '') {
 		return PointModel.paginate(
 			{
@@ -109,7 +121,6 @@ class PointRepository {
 				$replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ['$accounts', 0] }, '$$ROOT'] } },
 			},
 			{ $project: { accounts: 0 } },
-		
 		]);
 	}
 
