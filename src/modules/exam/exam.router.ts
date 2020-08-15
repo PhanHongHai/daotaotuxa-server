@@ -25,7 +25,7 @@ router.post(
 	examController.createExam,
 );
 // create new exam random
-router.post('/auto', validatorBody(CreateExamAutoValidatorSchema), examController.createExamAuto);
+router.post('/auto',  examController.createExamAuto);
 // update exam
 router.patch('/:ID', validatorParam(IdMongoValidatorSchemas), examController.updateExam);
 // remove exam

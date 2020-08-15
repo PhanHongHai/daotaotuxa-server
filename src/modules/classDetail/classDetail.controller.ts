@@ -10,7 +10,7 @@ import { BadRequestException, NotFoundException } from '../../common/error';
 
 // interfaces
 
-import { ICreateClassDetail,  } from './classDetail.interface';
+import { ICreateClassDetail } from './classDetail.interface';
 import { getMessages } from '../../common/messages/index';
 import moment from 'moment';
 
@@ -52,14 +52,14 @@ class ClassDetailController extends BaseController {
 			students.forEach((ele: any, index: number) =>
 				dataStudentsArr.push({
 					stt: index + 1,
-					tag: ele.accountID.tag,
-					name: ele.accountID.name,
-					email: ele.accountID.email ? ele.accountID.email : '',
-					sex: ele.accountID.sex == 1 ? 'Nam' : 'Nữ',
-					birthDay: moment(ele.accountID.birthDay).format('DD-MM-YYYY'),
-					idCard: ele.accountID.idCard,
-					phoneNumber: ele.accountID.phoneNumber,
-					address: getNameCountry(countries, ele.accountID.country),
+					tag: ele.accountID && ele.accountID.tag,
+					name: ele.accountID && ele.accountID.name,
+					email: ele.accountID && ele.accountID.email ? ele.accountID.email : '',
+					sex: ele.accountID && ele.accountID.sex == 1 ? 'Nam' : 'Nữ',
+					birthDay: ele.accountID && moment(ele.accountID.birthDay).format('DD-MM-YYYY'),
+					idCard: ele.accountID && ele.accountID.idCard,
+					phoneNumber: ele.accountID && ele.accountID.phoneNumber,
+					address: ele.accountID && getNameCountry(countries, ele.accountID.country),
 				}),
 			);
 			let workbook = new excel.Workbook();
@@ -69,9 +69,9 @@ class ClassDetailController extends BaseController {
 			row.hidden = true;
 			worksheet.mergeCells('D4:F4');
 			worksheet.mergeCells('G2:I2');
-		//	worksheet.mergeCells('G2','H2','I2');
+			//	worksheet.mergeCells('G2','H2','I2');
 			worksheet.mergeCells('G3:I3');
-			worksheet.getCell('C6').value = 'Mã lớp học :'+ classDetail.tag;
+			worksheet.getCell('C6').value = 'Mã lớp học :' + classDetail.tag;
 			worksheet.getCell('C7').value = 'Tên lớp học :' + classDetail.name;
 			worksheet.getCell('G2').value = 'CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM';
 			worksheet.getCell('G2').font = {
@@ -79,7 +79,7 @@ class ClassDetailController extends BaseController {
 				size: 17,
 				bold: true,
 			};
-			worksheet.getCell('G2').alignment = {  horizontal: 'center' };
+			worksheet.getCell('G2').alignment = { horizontal: 'center' };
 			worksheet.getCell('G3').value = 'Độc lập - Tự do - Hạnh phúc';
 			worksheet.getCell('G3').font = {
 				family: 4,
@@ -106,9 +106,9 @@ class ClassDetailController extends BaseController {
 				'Địa Chỉ',
 			];
 			worksheet.columns = [
-				{ header: 'STT', key: 'stt', width: 10,  },
-				{ header: 'MSHV', key: 'tag', width: 10, },
-				{ header: 'Họ Tên', key: 'name', width: 30, },
+				{ header: 'STT', key: 'stt', width: 10 },
+				{ header: 'MSHV', key: 'tag', width: 10 },
+				{ header: 'Họ Tên', key: 'name', width: 30 },
 				{ header: 'Email', key: 'email', width: 30 },
 				{ header: 'Giới Tính', key: 'sex', width: 15 },
 				{ header: 'Ngày Sinh', key: 'birthDay', width: 20 },
@@ -201,13 +201,14 @@ class ClassDetailController extends BaseController {
 		try {
 			let { limit, page, keyword, classID } = req.query;
 			const skip = Number(limit) * Number(page) - Number(limit);
+			let total = await this.ClassDetailRepository.getStudentsByOption({ classID });
 			let students = await this.ClassDetailRepository.getAndSearchStudentOfClassByTeacher(
 				keyword,
 				Number(limit),
 				skip,
 				classID,
 			);
-			if (students) res.json({ docs: students, limit, page, total: students.length });
+			if (students) res.json({ docs: students, limit, page, total: total != null ? total.length : 0 });
 			else res.json({ docs: [], limit, page, total: 0 });
 		} catch (error) {
 			next(error);

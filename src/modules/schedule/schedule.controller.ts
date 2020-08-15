@@ -5,7 +5,7 @@ import { BadRequestException } from '../../common/error';
 import { getMessages } from '../../common/messages/index';
 import ScheduleRepository from './schedule.repository';
 
-import { ICreateSchedule, IUpdateSchedule, ISchedule } from './schedule.interface';
+import { ICreateSchedule, IUpdateSchedule, ISchedule,ICreateScheduleByStudent } from './schedule.interface';
 
 function checkTimeSchedule(arrSchedule: ISchedule[], dataSchedule: any) {
 	let result = [];
@@ -139,6 +139,7 @@ class scheduleController extends BaseController {
 			next(error);
 		}
 	}
+
 	/**
 	 * create schedule
 	 * @param req

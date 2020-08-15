@@ -221,6 +221,7 @@ class ClassDetailRepository {
 		return ClassDetailModel.find({
 			...option,
 			isDeleted: false,
+			typeAccount:'student'
 		}).populate({
 			path: 'accountID',
 			match: { role: { $eq: 'student' } },

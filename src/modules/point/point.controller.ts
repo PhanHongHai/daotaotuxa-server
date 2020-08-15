@@ -301,10 +301,12 @@ class ExamController extends BaseController {
 			const dataTask: ISubmitTask = req.body;
 			const { userID } = req;
 			let numberAnswerRight = 0;
-			let resultPoint = 0;
+			let resultPoint : any = 0;
 			let existSchedule = await this.scheduleRepository.getByOption({ _id: dataTask.scheduleID });
 			if (!existSchedule) throw new BadRequestException(this.messges.SCHEDULE_IS_NOT_EXIST);
 			let existExam = await this.examRepository.getByOption({ _id: dataTask.examID });
+			let existUser = await this.logPointRepository.getByOption({accountID:userID, scheduleID:dataTask.scheduleID});
+			if(existUser) throw new BadRequestException(this.messges.USER_IS_DONE);
 			if (!existExam) throw new BadRequestException(this.messges.EXAM_IS_NOT_EXIST);
 			if (dataTask.answers.length > 0) {
 				dataTask.answers.forEach((ele: any) => {
@@ -314,7 +316,7 @@ class ExamController extends BaseController {
 					if (checkAnswer) numberAnswerRight += 1;
 				});
 			}
-			resultPoint = numberAnswerRight * existExam.point;
+			resultPoint = (Math.round(numberAnswerRight * existExam.point)).toFixed(2);
 			let existPoint = await this.pointRepository.getByOption({ accountID: userID, subjectID: dataTask.subjectID });
 			if (existPoint) {
 				let updatePoint = false;

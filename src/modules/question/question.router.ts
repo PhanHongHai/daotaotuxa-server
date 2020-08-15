@@ -11,12 +11,13 @@ import { GetTotalQuestionValidatorSchema } from './validatorSchemas/question.get
 const questionController = new QuestionController();
 var router = express.Router();
 
-router.use(authorize(['admin', 'employment', 'teacher']));
+router.use(authorize(['admin', 'employment', 'teacher','student']));
 
 // get and search questions
 router.get('/', validatorQuery(GetListValidatorSchemas), questionController.getAndSearch);
 router.get('/exam', validatorQuery(GetListValidatorSchemas), questionController.getQuestionForUpdateExam);
 router.get('/total-question', validatorQuery(GetTotalQuestionValidatorSchema), questionController.getNumberQuestion);
+router.get('/get-questions-for-quick-test',questionController.getRandomForTestQuick);
 //get detail question
 router.get('/:ID', validatorParam(IdMongoValidatorSchemas), questionController.getDetail);
 // create new question

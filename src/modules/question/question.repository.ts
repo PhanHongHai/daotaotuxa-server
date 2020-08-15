@@ -99,7 +99,7 @@ class QuestionRepository {
 				},
 			},
 		]);
-		return reports ? reports[0].total : 0;
+		return reports && reports.length > 0 ? reports[0].total : 0;
 		//	return QuestionModel.count({ $and: [{ ...option }, { level }, { isDeleted: false }] });
 	}
 	/**

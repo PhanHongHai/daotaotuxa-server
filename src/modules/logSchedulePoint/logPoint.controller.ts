@@ -101,12 +101,21 @@ class LogPointController extends BaseController {
 				size: 17,
 				bold: true,
 			};
-			let rowHeader = ['A','B','C','D','E','F'];
-			rowHeader.forEach(ele =>{
+			let rowHeader = ['A', 'B', 'C', 'D', 'E', 'F'];
+			rowHeader.forEach(ele => {
 				worksheet.mergeCells(`${ele}13:${ele}14`);
 				worksheet.getCell(`${ele}13`).alignment = { vertical: 'middle', horizontal: 'center' };
 			});
-			worksheet.getRow(13).values = ['STT', 'MSHV', 'Họ Tên', 'Giới Tính', 'Ngày Sinh', 'Quê Quán', 'Bằng Chữ','Bằng Số'];
+			worksheet.getRow(13).values = [
+				'STT',
+				'MSHV',
+				'Họ Tên',
+				'Giới Tính',
+				'Ngày Sinh',
+				'Quê Quán',
+				'Bằng Chữ',
+				'Bằng Số',
+			];
 			worksheet.columns = [
 				{ header: 'STT', key: 'stt', width: 10 },
 				{ header: 'MSHV', key: 'tag', width: 10 },
@@ -122,7 +131,7 @@ class LogPointController extends BaseController {
 			worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
 				const insideColumns = ['B', 'C', 'D', 'E', 'F'];
 				if (rowNumber == 13) {
-				//	worksheet.mergeCells(`A${rowNumber}:A${rowNumber - 1}`);
+					//	worksheet.mergeCells(`A${rowNumber}:A${rowNumber - 1}`);
 					worksheet.getCell(`A${rowNumber}`).border = {
 						top: { style: 'thin' },
 						left: { style: 'thin' },
@@ -131,15 +140,15 @@ class LogPointController extends BaseController {
 					};
 					worksheet.getCell(`A${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 					insideColumns.forEach(ele => {
-					//	worksheet.mergeCells(`${ele}${rowNumber}:${ele}${rowNumber - 1}`);
-					worksheet.getCell(`${ele}${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
+						//	worksheet.mergeCells(`${ele}${rowNumber}:${ele}${rowNumber - 1}`);
+						worksheet.getCell(`${ele}${rowNumber}`).alignment = { vertical: 'middle', horizontal: 'center' };
 						worksheet.getCell(`${ele}${rowNumber}`).border = {
 							top: { style: 'thin' },
 							left: { style: 'thin' },
 							bottom: { style: 'thin' },
 							right: { style: 'thin' },
 						};
-						worksheet.getCell(`${ele}${rowNumber+1}`).border = {
+						worksheet.getCell(`${ele}${rowNumber + 1}`).border = {
 							top: { style: 'thin' },
 							left: { style: 'thin' },
 							bottom: { style: 'thin' },
@@ -147,20 +156,20 @@ class LogPointController extends BaseController {
 						};
 					});
 					worksheet.mergeCells(`G${rowNumber}:H${rowNumber}`);
-				
+
 					worksheet.getCell(`G${rowNumber}`).border = {
 						top: { style: 'thin' },
 						left: { style: 'thin' },
 						bottom: { style: 'thin' },
 						right: { style: 'thin' },
 					};
-					worksheet.getCell(`G${rowNumber+1}`).border = {
+					worksheet.getCell(`G${rowNumber + 1}`).border = {
 						top: { style: 'thin' },
 						left: { style: 'thin' },
 						bottom: { style: 'thin' },
 						right: { style: 'thin' },
 					};
-					worksheet.getCell(`H${rowNumber+1}`).border = {
+					worksheet.getCell(`H${rowNumber + 1}`).border = {
 						top: { style: 'thin' },
 						left: { style: 'thin' },
 						bottom: { style: 'thin' },
@@ -219,6 +228,23 @@ class LogPointController extends BaseController {
 		}
 	}
 
+	/**
+	 * get detail point by student
+	 * @param req
+	 * @param res
+	 * @param next
+	 */
+	async checkStudentInSchedule(req: any, res: any, next: any) {
+		try {
+			let { scheduleID } = req.params;
+			let { userID } = req;
+			let user = await this.logPointRepository.getByOption({ accountID: userID, scheduleID });
+			if(user) res.json({isDone:true});
+			else res.json({isDone:false});
+		} catch (error) {
+			next(error);
+		}
+	}
 	/**
 	 * get detail point by student
 	 * @param req

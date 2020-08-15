@@ -5,6 +5,8 @@ import QuestionRepository from './question.repository';
 import { ICreateQuestion, IUpdateQuestion } from './question.interface';
 import { Types } from 'mongoose';
 
+import suffle from '../../utils/randomEleArr';
+
 class QuestionController extends BaseController {
 	questionRepository: QuestionRepository;
 	messges = getMessages('question', 'vi');
@@ -53,10 +55,57 @@ class QuestionController extends BaseController {
 	 * @param res
 	 * @param next
 	 */
+	async getRandomForTestQuick(req: any, res: any, next: any) {
+		try {
+			let { level1, level2, level3, level4, subjectID } = req.query;
+			let questionsExam: any[] = [];
+			if (Number(level1) > 0) {
+				let option = { type: 1, tag: Types.ObjectId(subjectID) };
+				let optionLevel1 = { type: 1 };
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel1, subjectID, 1);
+				let random = Number(level1) <= countQuestion * 2 ? 0 : Math.floor(Math.random() * countQuestion);
+				let questionLevel1 = await this.questionRepository.getQuestionsRandom(Number(level1), 1, random, option);
+				if (questionLevel1 && questionLevel1.length > 0) questionLevel1.forEach(ele => questionsExam.push(ele));
+			}
+			if (Number(level2) > 0) {
+				let option = { type: 1, tag: Types.ObjectId(subjectID) };
+				let optionLevel2 = { type: 1 };
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel2, subjectID, 2);
+				let random = Number(level2) <= countQuestion * 2 ? 0 : Math.floor(Math.random() * countQuestion);
+				let questionLevel2 = await this.questionRepository.getQuestionsRandom(Number(level2), 2, random, option);
+				if (questionLevel2 && questionLevel2.length > 0) questionLevel2.forEach(ele => questionsExam.push(ele));
+			}
+			if (Number(level3) > 0) {
+				let option = { type: 1, tag: Types.ObjectId(subjectID) };
+				let optionLevel3 = { type: 1 };
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel3, subjectID, 3);
+				let random = Number(level3) <= countQuestion * 2 ? 0 : Math.floor(Math.random() * countQuestion);
+				let questionLeve3 = await this.questionRepository.getQuestionsRandom(Number(level3), 3, random, option);
+				if (questionLeve3 && questionLeve3.length > 0) questionLeve3.forEach(ele => questionsExam.push(ele));
+			}
+			if (Number(level4) > 0) {
+				let option = { type: 1, tag: Types.ObjectId(subjectID) };
+				let optionLevel4 = { type: 1 };
+				let countQuestion = await this.questionRepository.counQuestionByLevel(optionLevel4, subjectID, 4);
+				let random = Number(level3) <= countQuestion * 2 ? 0 : Math.floor(Math.random() * countQuestion);
+				let questionLevel4 = await this.questionRepository.getQuestionsRandom(Number(level4), 4, random, option);
+				if (questionLevel4 && questionLevel4.length > 0) questionLevel4.forEach(ele => questionsExam.push(ele));
+			}
+			res.json(suffle(questionsExam));
+		} catch (error) {
+			next(error);
+		}
+	}
+	/**
+	 * get questions random
+	 * @param req
+	 * @param res
+	 * @param next
+	 */
 	async getNumberQuestion(req: any, res: any, next: any) {
 		try {
 			let { typeLevel1, typeLevel2, typeLevel3, typeLevel4, tag } = req.query;
-			let option = tag == '' ? {} : { tag:Types.ObjectId(tag) };
+			let option = tag == '' ? {} : { tag: Types.ObjectId(tag) };
 			let optionLevel1 = typeLevel1 == 2 ? {} : { $eq: ['$type', Number(typeLevel1)] };
 			let optionLevel2 = typeLevel2 == 2 ? {} : { $eq: ['$type', Number(typeLevel2)] };
 			let optionLevel3 = typeLevel3 == 2 ? {} : { $eq: ['$type', Number(typeLevel3)] };

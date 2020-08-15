@@ -6,7 +6,7 @@ const ScheduleSchema = new Schema(
 	{
 		title: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		type: {
 			type: Number,

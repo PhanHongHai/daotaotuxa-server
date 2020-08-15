@@ -4,6 +4,7 @@ export interface IExam extends Document {
 	subjectID: Types.ObjectId;
 	title: String;
 	point: Number;
+	number: Number;
 	questions: [Types.ObjectId];
 	isDeleted: Boolean;
 	createdAt: Date;
@@ -11,6 +12,7 @@ export interface IExam extends Document {
 export interface ICreateExam extends Document {
 	title: String;
 	point: Number;
+	number: Number;
 	questions: [Types.ObjectId];
 	subjectID: Types.ObjectId;
 }
@@ -18,6 +20,7 @@ export interface ICreateExam extends Document {
 export interface ICreateExamAuto extends Document {
 	title: String;
 	point: Number;
+	number: Number;
 	subjectID:string;
 	level1: {
 		type: Number;

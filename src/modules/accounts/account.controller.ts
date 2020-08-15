@@ -393,7 +393,6 @@ class AccountController extends BaseController {
 	 */
 	async createAccountStudent(req: any, res: any, next: any) {
 		try {
-			console.log(req);
 			const dataBody: ICreateStudentAccount = req.body;
 			const { userID } = req;
 			let countAccountStudent = await this.accountRepository.getCountAll({ role: 'student' });
